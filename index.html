@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    
+    <!-- SEO Meta -->
+    <title>Soome Keele Treener | Käändelõppude Harjutamine | Perekond Ojaküla</title>
+    <meta name="description" content="Õpi soome keele kohakäändeid (inessiiv, elatiiv, illatiiv) mänguliselt ja tasuta. Loodud südamega Eestis soome keele eksamiks valmistujatele.">
+    <meta name="keywords" content="soome keel, käänded, soome keele õppimine, eestlane õpib soome keelt, soome eksam, kielioppi, sijamuodot">
+    <meta name="author" content="Perekond Ojaküla">
+    <meta name="theme-color" content="#FFF8F0">
+    
+    <!-- Open Graph / Sotsiaalmeedia -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Soome Keele Treener | Perekond Ojaküla">
+    <meta property="og:description" content="Õpi soome keele kohakäändeid mänguliselt. Loodud südamega Eestis.">
+    <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Crect width='1200' height='630' fill='%23FFF8F0'/%3E%3Ctext x='600' y='300' font-family='Georgia' font-size='48' fill='%233A3A3A' text-anchor='middle'%3E🦊 Soome Keele Treener%3C/text%3E%3Ctext x='600' y='380' font-family='Georgia' font-size='24' fill='%23888' text-anchor='middle'%3EPerekond Ojaküla%3C/text%3E%3C/svg%3E">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🦊%3C/text%3E%3C/svg%3E">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Schema.org Struktureeritud Andmed -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Soome Keele Treener",
+      "description": "Interaktiivne tööriist soome keele kohakäänete harjutamiseks.",
+      "applicationCategory": "EducationalApplication",
+      "author": {
+        "@type": "Person",
+        "name": "Perekond Ojaküla"
+      },
+      "inLanguage": "et",
+      "about": {
+        "@type": "Language",
+        "name": "Soome keel"
+      }
+    }
+    </script>
+    
+    <style>
+        /* ===== RESET & MUUTUJAD ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-cream: #FFF8F0;
+            --bg-white: #FFFFFF;
+            --text-dark: #3A3A3A;
+            --text-light: #6B6B6B;
+            --accent-lavender: #B8A9D6;
+            --btn-primary: #E8D5C4;
+            --btn-hover: #D4C4B3;
+            --success-green: #D4E6C4;
+            --error-red: #F0C4C4;
+            --border-radius-lg: 24px;
+            --border-radius-md: 16px;
+            --border-radius-sm: 12px;
+            --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.06);
+            --font-heading: 'Quicksand', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+        
+        /* ===== TAUSTA MUSTER (Kuuseoksad) ===== */
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        /* Õrn loodusmuster */
+        body::before {
+            content: "🌲     🍃     🌲     🍃     🌲";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            font-size: 80px;
+            color: rgba(168, 184, 150, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            transform: rotate(-5deg);
+        }
+        
+        body::after {
+            content: "🫐     🫐     🫐";
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            font-size: 100px;
+            color: rgba(184, 169, 214, 0.04);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* ===== PÕHIKONTEINER ===== */
+        .app-container {
+            background: var(--bg-white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 32px 28px;
+            max-width: 650px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .app-container:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        
+        /* ===== PÄIS ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed rgba(184, 169, 214, 0.2);
+        }
+        
+        .maskott {
+            font-size: 48px;
+            line-height: 1;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
+            transition: transform 0.2s ease;
+            cursor: default;
+        }
+        
+        .maskott:hover {
+            transform: scale(1.05);
+        }
+        
+        .header-text h1 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 28px;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+        
+        .header-text p {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 2px;
+        }
+        
+        /* ===== PROGRESSI ALATI ===== */
+        .progress-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            background: rgba(232, 213, 196, 0.15);
+            padding: 12px 18px;
+            border-radius: var(--border-radius-md);
+        }
+        
+        .seeria {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .seeria span:first-child {
+            font-size: 24px;
+        }
+        
+        .mustikad {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .mustikas {
+            font-size: 22px;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mustikas.täidetud {
+            opacity: 1;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        /* ===== KÜSIMUSE KAART ===== */
+        .question-card {
+            background: linear-gradient(135deg, rgba(255, 248, 240, 0.6) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-radius: var(--border-radius-md);
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            border: 1px solid rgba(232, 213, 196, 0.3);
+        }
+        
+        .lause {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            font-weight: 500;
+            color: var(--text-dark);
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        
+        .lause lünk {
+            display: inline-block;
+            min-width: 120px;
+            border-bottom: 3px solid var(--accent-lavender);
+            margin: 0 4px;
+            vertical-align: middle;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .vihje {
+            margin-top: 16px;
+            font-size: 18px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        .vihje span {
+            background: rgba(184, 169, 214, 0.15);
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-style: normal;
+        }
+        
+        /* ===== VASTUSE ALA ===== */
+        .vastus-ala {
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .vastus-input {
+            flex: 1;
+            padding: 18px 20px;
+            font-size: 20px;
+            font-family: var(--font-body);
+            border: 2px solid rgba(232, 213, 196, 0.4);
+            border-radius: var(--border-radius-sm);
+            background: white;
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .vastus-input:focus {
+            border-color: var(--accent-lavender);
+            box-shadow: 0 0 0 4px rgba(184, 169, 214, 0.15);
+        }
+        
+        .vastus-input::placeholder {
+            color: #C5B5A5;
+            font-size: 16px;
+            opacity: 0.6;
+        }
+        
+        .btn {
+            padding: 18px 28px;
+            font-size: 18px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--btn-primary);
+            color: var(--text-dark);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+        }
+        
+        .btn:hover {
+            background: var(--btn-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--accent-lavender);
+            color: var(--text-dark);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(184, 169, 214, 0.1);
+        }
+        
+        .btn-small {
+            padding: 12px 18px;
+            font-size: 16px;
+        }
+        
+        /* ===== TAGASISIDE ===== */
+        .tagasiside {
+            min-height: 60px;
+            padding: 12px 18px;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 20px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        
+        .tagasiside.õige {
+            background: var(--success-green);
+            color: #2D4A1E;
+            border-left: 6px solid #6B9E4A;
+        }
+        
+        .tagasiside.vale {
+            background: var(--error-red);
+            color: #6B2E2E;
+            border-left: 6px solid #C44B4B;
+        }
+        
+        .tagasiside.info {
+            background: rgba(232, 213, 196, 0.3);
+            color: var(--text-light);
+        }
+        
+        .tagasiside-tekst {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .reegeli-nupp {
+            background: transparent;
+            border: 1.5px solid currentColor;
+            color: inherit;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+        
+        .reegeli-nupp:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .katsed {
+            font-size: 15px;
+            opacity: 0.8;
+        }
+        
+        /* ===== TÖÖRIISTAD ===== */
+        .tools-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .raskete-nupud {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-icon {
+            padding: 12px 16px;
+            font-size: 18px;
+            background: white;
+            border: 1.5px solid rgba(184, 169, 214, 0.3);
+        }
+        
+        /* ===== JALUS ===== */
+        .footer {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 2px dashed rgba(184, 169, 214, 0.2);
+            text-align: center;
+        }
+        
+        .footer-autor {
+            font-family: var(--font-heading);
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        
+        .footer-moto {
+            font-size: 14px;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+        
+        .footer-fakt {
+            background: rgba(184, 169, 214, 0.08);
+            padding: 12px 16px;
+            border-radius: var(--border-radius-md);
+            font-size: 14px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        .footer-fakt span:first-child {
+            font-size: 24px;
+        }
+        
+        /* ===== UTILIIDID ===== */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* ===== MOBIIL ===== */
+        @media (max-width: 600px) {
+            .app-container {
+                padding: 20px 16px;
+            }
+            
+            .lause {
+                font-size: 26px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                padding: 16px 20px;
+                white-space: normal;
+            }
+            
+            .tools-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .raskete-nupud {
+                justify-content: center;
+            }
+            
+            .header-text h1 {
+                font-size: 24px;
+            }
+        }
+        
+        /* ===== ANIMATSIOONID ===== */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .maskott.rõõmus {
+            animation: bounce 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .maskott.kurb {
+            animation: shake 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- PÄIS -->
+    <div class="header">
+        <div class="maskott" id="maskott">🦊</div>
+        <div class="header-text">
+            <h1>Soome Keele Treener</h1>
+            <p>Kohakäänded • Inessiiv • Elatiiv • Illatiiv</p>
+        </div>
+    </div>
+    
+    <!-- PROGRESS -->
+    <div class="progress-section">
+        <div class="seeria">
+            <span>🔥</span>
+            <span id="seeria-nr">0</span>
+        </div>
+        <div class="mustikad" id="mustika-korv">
+            <span class="mustikas">🫐</span>
+            <span class="mustikas">🫐</span>
+            <span class="mustikas">🫐</span>
+            <span class="mustikas">🫐</span>
+            <span class="mustikas">🫐</span>
+        </div>
+    </div>
+    
+    <!-- KÜSIMUS -->
+    <div class="question-card">
+        <div class="lause" id="lause-kuva">Asun <lünk id="lünk-tekst">_____</lünk>.</div>
+        <div class="vihje" id="vihje-kuva">(<span id="vihje-sona">maja</span>)</div>
+    </div>
+    
+    <!-- VASTUSE SISESTAMINE -->
+    <div class="vastus-ala">
+        <div class="input-group">
+            <input type="text" class="vastus-input" id="vastus-input" placeholder="Kirjuta siia..." autocomplete="off" autofocus>
+            <button class="btn" id="kontrolli-nupp">Kontrolli</button>
+            <button class="btn btn-secondary" id="jargmine-nupp" style="display: none;">Järgmine →</button>
+        </div>
+    </div>
+    
+    <!-- TAGASISIDE -->
+    <div class="tagasiside info" id="tagasiside-kast">
+        <div class="tagasiside-tekst">
+            <span id="tagasiside-ikoon">📝</span>
+            <span id="tagasiside-tekst">Alustame! Kirjuta puuduv sõnavorm.</span>
+        </div>
+        <div class="katsed" id="katsete-luger"></div>
+        <button class="reegeli-nupp hidden" id="reegeli-nupp" aria-label="Näita reeglit">?</button>
+    </div>
+    
+    <!-- TÖÖRIISTAD -->
+    <div class="tools-row">
+        <div class="raskete-nupud">
+            <button class="btn btn-small btn-icon" id="lipu-nupp" title="Märgi raskeks">🏁</button>
+            <button class="btn btn-small btn-icon" id="raskeid-nupp" title="Harjuta raskeid sõnu">🎯 Raskeid</button>
+            <button class="btn btn-small btn-icon" id="eksport-nupp" title="Ekspordi edusammud">📤</button>
+            <button class="btn btn-small btn-icon" id="import-nupp" title="Impordi edusammud">📥</button>
+            <input type="file" id="import-fail" accept=".json" style="display: none;">
+        </div>
+        <button class="btn btn-small btn-secondary" id="uus-lause-nupp">🎲 Uus lause</button>
+    </div>
+    
+    <!-- JALUS -->
+    <div class="footer">
+        <div class="footer-autor">🌿 Koostanud südamega Perekond Ojaküla</div>
+        <div class="footer-moto">"Sisu on seiklus, mida mööda käia"</div>
+        <div class="footer-fakt" id="fakti-kast">
+            <span>🇫🇮</span>
+            <span id="fakti-tekst">Soomes on igaühel õigus looduses marju korjata – ka eramaal!</span>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    // ===== ANDMED =====
+    
+    // Sõnastik
+    const sonad = [
+        { id: 1, tyvi: "talo", tolge: "maja", vormid: { inessiiv: "talossa", elatiiv: "talosta", illatiiv: "taloon" }, raske: false },
+        { id: 2, tyvi: "metsä", tolge: "mets", vormid: { inessiiv: "metsässä", elatiiv: "metsästä", illatiiv: "metsään" }, raske: false },
+        { id: 3, tyvi: "kauppa", tolge: "pood", vormid: { inessiiv: "kaupassa", elatiiv: "kaupasta", illatiiv: "kauppaan" }, raske: false },
+        { id: 4, tyvi: "koulu", tolge: "kool", vormid: { inessiiv: "koulussa", elatiiv: "koulusta", illatiiv: "kouluun" }, raske: false },
+        { id: 5, tyvi: "puisto", tolge: "park", vormid: { inessiiv: "puistossa", elatiiv: "puistosta", illatiiv: "puistoon" }, raske: false },
+        { id: 6, tyvi: "kirjasto", tolge: "raamatukogu", vormid: { inessiiv: "kirjastossa", elatiiv: "kirjastosta", illatiiv: "kirjastoon" }, raske: false },
+        { id: 7, tyvi: "kahvila", tolge: "kohvik", vormid: { inessiiv: "kahvilassa", elatiiv: "kahvilasta", illatiiv: "kahvilaan" }, raske: false },
+        { id: 8, tyvi: "apteekki", tolge: "apteek", vormid: { inessiiv: "apteekissa", elatiiv: "apteekista", illatiiv: "apteekkiin" }, raske: false }
+    ];
+    
+    // Lausemallid
+    const laused = [
+        { mall: "Asun {0}.", kaane: "inessiiv", reegel: "Väljendab asukohta millegi sees. Lisa tüvele -ssa või -ssä." },
+        { mall: "Olen {0}.", kaan
