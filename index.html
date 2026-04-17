@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     
-    <title>Soome Keele Treener PRO | 100 sõna + 12 käänet | Perekond Ojaküla</title>
-    <meta name="description" content="Õpi soome keelt MÄNGULISELT! 100 põhisõna, 12 käänet, TEST ja MARATON.">
+    <title>Soome Keele Treener PRO | 100 sõna + 50 käänet | Perekond Ojaküla</title>
+    <meta name="description" content="Õpi soome keelt MÄNGULISELT! 100 põhisõna, 50+ käändsõna, TEST ja MARATON.">
     <meta name="author" content="Perekond Ojaküla">
-    <meta name="theme-color" content="#FFF8F0">
+    <meta name="theme-color" content="#1A3A5C">
     
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Soome Keele Treener PRO | 100 sõna + 12 käänet">
+    <meta property="og:title" content="Soome Keele Treener PRO | 100 sõna + 50 käänet">
     <meta property="og:description" content="Õpi soome keelt MÄNGULISELT! 100 sõna, harjuta käändeid, testi end.">
     <meta property="og:image" content="https://ojakula-space.github.io/soome-keele-treener/assets/og-image-pro.png">
     <meta property="og:url" content="https://ojakula-space.github.io/soome-keele-treener/">
@@ -20,9 +20,17 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-K8TZY10D5J');
+      gtag('config', 'G-K8TZY10D5J', {
+        'custom_map': {
+          'dimension1': 'raskusaste',
+          'dimension2': 'reziim'
+        }
+      });
     </script>
 
+    <!-- Konfeti teek -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -31,38 +39,58 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg-cream: #FFF8F0; --bg-white: #FFFFFF; --text-dark: #3A3A3A; --text-light: #6B6B6B;
-            --accent-lavender: #B8A9D6; --accent-blue: #C4DFE6; --accent-gold: #E8D5A5;
-            --accent-pro: #C9A9A0; --btn-primary: #E8D5C4; --btn-hover: #D4C4B3;
-            --success-green: #D4E6C4; --error-red: #F0C4C4; --marathon-orange: #F5C6A0;
-            --learn-green: #A8D5BA; --border-radius-lg: 24px; --border-radius-md: 16px;
-            --border-radius-sm: 12px; --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
+            --bg-cream: #F0F4F8; --bg-white: #FFFFFF; --text-dark: #1A3A5C; --text-light: #4A6A8A;
+            --accent-blue: #2E5A88; --accent-lightblue: #4A8BB5; --accent-white: #E8F0FE;
+            --accent-gold: #E8D5A5; --accent-pro: #C9A9A0; --btn-primary: #2E5A88;
+            --btn-hover: #1A3A5C; --success-green: #D4E6C4; --error-red: #F0C4C4;
+            --marathon-orange: #F5C6A0; --learn-green: #A8D5BA;
+            --border-radius-lg: 24px; --border-radius-md: 16px; --border-radius-sm: 12px;
+            --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.08);
             --font-heading: 'Quicksand', sans-serif; --font-body: 'Inter', sans-serif;
         }
         
         body {
-            font-family: var(--font-body); background: linear-gradient(135deg, #FFF8F0 0%, #F0E6D8 100%);
+            font-family: var(--font-body); 
+            background: linear-gradient(135deg, #E8F0FE 0%, #D4E4F0 50%, #FFFFFF 100%);
             color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; padding: 20px; line-height: 1.5;
+            position: relative;
+        }
+        
+        /* Soome lipu triibud taustal (õrnad) */
+        body::before {
+            content: "";
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(45deg, transparent 0px, transparent 40px, rgba(46, 90, 136, 0.02) 40px, rgba(46, 90, 136, 0.02) 80px);
+            pointer-events: none; z-index: 0;
         }
         
         .app-container {
             background: var(--bg-white); border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-soft); padding: 28px; max-width: 900px; width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--shadow-soft); padding: 28px; max-width: 950px; width: 100%;
+            border: 1px solid rgba(46, 90, 136, 0.1); position: relative; z-index: 1;
         }
         
         .header {
             display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
-            padding-bottom: 16px; border-bottom: 2px dashed rgba(184, 169, 214, 0.2);
+            padding-bottom: 16px; border-bottom: 2px solid rgba(46, 90, 136, 0.15);
             flex-wrap: wrap;
         }
-        .maskott { font-size: 48px; line-height: 1; cursor: pointer; }
+        .maskott { font-size: 48px; line-height: 1; cursor: pointer; transition: all 0.3s ease; }
         .header-text h1 { font-family: var(--font-heading); font-weight: 700; font-size: 24px; color: var(--text-dark); }
-        .header-text h1 span { background: var(--accent-pro); color: white; padding: 2px 10px; border-radius: 30px; font-size: 14px; margin-left: 8px; }
+        .header-text h1 span { background: var(--accent-blue); color: white; padding: 2px 10px; border-radius: 30px; font-size: 14px; margin-left: 8px; }
         .header-text p { color: var(--text-light); font-size: 13px; }
         
-        .reziimi-valik { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+        .top-right-controls { display: flex; gap: 8px; margin-left: auto; align-items: center; }
+        .heli-nupp {
+            background: white; border: 1px solid var(--accent-blue); border-radius: 40px;
+            padding: 8px 12px; font-size: 18px; cursor: pointer; transition: all 0.2s;
+            color: var(--accent-blue);
+        }
+        .heli-nupp:hover { background: var(--accent-blue); color: white; }
+        .heli-nupp.aktiivne { background: var(--accent-blue); color: white; }
+        
+        .reziimi-valik { display: flex; gap: 6px; flex-wrap: wrap; }
         .reziim-nupp {
             padding: 8px 12px; font-size: 13px; font-family: var(--font-heading); font-weight: 700;
             border: none; border-radius: 40px; cursor: pointer; background: white;
@@ -72,24 +100,24 @@
         }
         .reziim-nupp span:first-child { font-size: 18px; margin-bottom: 2px; }
         .reziim-nupp span:last-child { font-size: 11px; font-weight: 600; }
-        .reziim-nupp.aktiivne { background: var(--accent-lavender); color: white; transform: scale(1.02); }
+        .reziim-nupp.aktiivne { background: var(--accent-blue); color: white; transform: scale(1.02); }
         .reziim-nupp.learn.aktiivne { background: var(--learn-green); color: var(--text-dark); }
         .reziim-nupp.maraton.aktiivne { background: var(--marathon-orange); }
         
         .tase-valik {
             display: flex; gap: 6px; justify-content: center; margin-bottom: 16px;
-            padding: 8px 0; border-bottom: 1px solid rgba(184, 169, 214, 0.1);
+            padding: 8px 0; border-bottom: 1px solid rgba(46, 90, 136, 0.1);
         }
         .tase-nupp {
             padding: 8px 20px; font-size: 14px; font-family: var(--font-heading); font-weight: 600;
-            border: none; border-radius: 30px; cursor: pointer; background: rgba(232, 213, 196, 0.2);
+            border: none; border-radius: 30px; cursor: pointer; background: rgba(46, 90, 136, 0.08);
             color: var(--text-light); transition: all 0.2s ease;
         }
-        .tase-nupp.aktiivne-tase { background: var(--accent-blue); color: var(--text-dark); font-weight: 700; }
+        .tase-nupp.aktiivne-tase { background: var(--accent-lightblue); color: white; font-weight: 700; }
         
         .progress-section {
             display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;
-            background: linear-gradient(135deg, rgba(232, 213, 196, 0.2) 0%, rgba(196, 223, 230, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(46, 90, 136, 0.05) 0%, rgba(74, 139, 181, 0.05) 100%);
             padding: 12px 18px; border-radius: var(--border-radius-md);
         }
         .seeria { display: flex; align-items: center; gap: 8px; font-family: var(--font-heading); font-weight: 600; font-size: 18px; }
@@ -99,32 +127,32 @@
         .mustikas.taidetud { opacity: 1; }
         
         .question-card {
-            background: linear-gradient(135deg, rgba(255, 248, 240, 0.8) 0%, rgba(255, 255, 255, 0.95) 100%);
+            background: linear-gradient(135deg, rgba(232, 240, 254, 0.8) 0%, rgba(255, 255, 255, 0.95) 100%);
             border-radius: var(--border-radius-md); padding: 32px 24px; margin-bottom: 24px;
-            text-align: center; border: 1px solid rgba(232, 213, 196, 0.4);
+            text-align: center; border: 1px solid rgba(46, 90, 136, 0.15);
         }
         .lause { font-family: var(--font-heading); font-size: 28px; font-weight: 500; color: var(--text-dark); line-height: 1.4; word-break: break-word; }
         .vihje { margin-top: 16px; font-size: 16px; color: var(--text-light); display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
-        .vihje span { background: rgba(184, 169, 214, 0.2); padding: 4px 14px; border-radius: 30px; }
-        .kaande-info { font-size: 14px; background: var(--accent-pro); padding: 4px 12px; border-radius: 30px; color: white; font-weight: 600; }
+        .vihje span { background: rgba(46, 90, 136, 0.1); padding: 4px 14px; border-radius: 30px; }
+        .kaande-info { font-size: 14px; background: var(--accent-blue); padding: 4px 12px; border-radius: 30px; color: white; font-weight: 600; }
         
         .vastus-ala { margin-bottom: 20px; }
         .input-group { display: flex; gap: 10px; margin-bottom: 12px; }
         .vastus-input {
             flex: 1; padding: 18px 20px; font-size: 20px; font-family: var(--font-body);
-            border: 2px solid rgba(232, 213, 196, 0.4); border-radius: var(--border-radius-sm);
+            border: 2px solid rgba(46, 90, 136, 0.2); border-radius: var(--border-radius-sm);
             background: white; color: var(--text-dark); outline: none; transition: all 0.2s ease; text-align: center;
         }
-        .vastus-input:focus { border-color: var(--accent-pro); box-shadow: 0 0 0 4px rgba(212, 184, 168, 0.15); }
+        .vastus-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 4px rgba(46, 90, 136, 0.1); }
         
         .btn {
             padding: 18px 28px; font-size: 18px; font-family: var(--font-heading); font-weight: 600;
             border: none; border-radius: var(--border-radius-sm); cursor: pointer; transition: all 0.2s ease;
-            background: var(--btn-primary); color: var(--text-dark); border: 1px solid rgba(255, 255, 255, 0.3);
-            white-space: nowrap;
+            background: var(--btn-primary); color: white; white-space: nowrap;
         }
-        .btn:hover { background: var(--btn-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05); }
-        .btn-secondary { background: transparent; border: 2px solid var(--accent-lavender); color: var(--text-dark); }
+        .btn:hover { background: var(--btn-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); }
+        .btn-secondary { background: transparent; border: 2px solid var(--accent-blue); color: var(--accent-blue); }
+        .btn-secondary:hover { background: var(--accent-blue); color: white; }
         .btn-small { padding: 12px 18px; font-size: 16px; }
         
         .tagasiside {
@@ -133,7 +161,7 @@
         }
         .tagasiside.oige { background: var(--success-green); color: #2D4A1E; border-left: 6px solid #6B9E4A; }
         .tagasiside.vale { background: var(--error-red); color: #6B2E2E; border-left: 6px solid #C44B4B; }
-        .tagasiside.info { background: rgba(232, 213, 196, 0.3); color: var(--text-light); }
+        .tagasiside.info { background: rgba(232, 240, 254, 0.5); color: var(--text-light); }
         .tagasiside-tekst { display: flex; align-items: center; gap: 10px; flex: 1; }
         .reegeli-nupp {
             background: transparent; border: 1.5px solid currentColor; color: inherit; width: 36px; height: 36px;
@@ -143,15 +171,15 @@
         
         .tools-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
         .raskete-nupud { display: flex; gap: 8px; flex-wrap: wrap; }
-        .btn-icon { padding: 12px 16px; font-size: 18px; background: white; border: 1.5px solid rgba(184, 169, 214, 0.3); }
+        .btn-icon { padding: 12px 16px; font-size: 18px; background: white; border: 1.5px solid var(--accent-blue); color: var(--accent-blue); }
         
         .footer {
-            margin-top: 28px; padding-top: 20px; border-top: 2px dashed rgba(184, 169, 214, 0.2); text-align: center;
+            margin-top: 28px; padding-top: 20px; border-top: 2px solid rgba(46, 90, 136, 0.1); text-align: center;
         }
         .footer-autor { font-family: var(--font-heading); font-weight: 500; color: var(--text-dark); margin-bottom: 6px; }
         .footer-moto { font-size: 14px; color: var(--text-light); font-style: italic; margin-bottom: 12px; }
         .footer-fakt {
-            background: rgba(184, 169, 214, 0.08); padding: 12px 16px; border-radius: var(--border-radius-md);
+            background: rgba(46, 90, 136, 0.05); padding: 12px 16px; border-radius: var(--border-radius-md);
             font-size: 14px; color: var(--text-light); display: flex; align-items: center; gap: 10px; margin-top: 12px;
         }
         
@@ -169,12 +197,11 @@
             position: absolute; top: 20px; right: 20px; font-size: 28px; cursor: pointer;
             background: none; border: none; color: var(--text-light);
         }
-        .test-progress { margin-bottom: 24px; font-weight: 600; }
-        .test-kysimus { font-size: 24px; margin-bottom: 24px; }
         
         .korv-container {
-            background: linear-gradient(135deg, rgba(168, 213, 186, 0.15) 0%, rgba(255,255,255,0.9) 100%);
+            background: linear-gradient(135deg, rgba(168, 213, 186, 0.1) 0%, rgba(255,255,255,0.9) 100%);
             border-radius: 20px; padding: 16px; margin-bottom: 24px; text-align: center;
+            border: 1px solid rgba(46, 90, 136, 0.1);
         }
         .korv-ikoon { font-size: 40px; margin-bottom: 8px; }
         .mustikad-korvis { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; margin: 10px 0; }
@@ -182,16 +209,16 @@
         .mustikas-mang.korjatud { opacity: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
         .sona-kaart {
             background: white; border-radius: 20px; padding: 40px 20px; margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px solid var(--learn-green);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px solid var(--accent-blue);
             font-size: 42px; font-weight: 700; text-align: center;
         }
         .variandid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
         .variant-nupp {
             padding: 18px 10px; font-size: 18px; font-family: var(--font-body);
-            border: 2px solid rgba(0,0,0,0.05); border-radius: 16px;
-            background: white; cursor: pointer; transition: all 0.2s ease;
+            border: 2px solid rgba(46, 90, 136, 0.15); border-radius: 16px;
+            background: white; cursor: pointer; transition: all 0.2s ease; color: var(--text-dark);
         }
-        .variant-nupp:hover:not(:disabled) { background: var(--learn-green); border-color: var(--learn-green); }
+        .variant-nupp:hover:not(:disabled) { background: var(--accent-lightblue); border-color: var(--accent-blue); color: white; }
         .variant-nupp.oige { background: var(--success-green); border-color: #6B9E4A; }
         .variant-nupp.vale { background: var(--error-red); border-color: #C44B4B; }
         .variant-nupp:disabled { cursor: not-allowed; opacity: 0.7; }
@@ -201,7 +228,7 @@
             text-align: center; font-size: 18px;
         }
         .tulemus-kaart {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-lavender) 100%);
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-lightblue) 100%);
             padding: 24px; border-radius: 20px; text-align: center; margin: 20px 0;
         }
         .tulemus-protsent { font-size: 64px; font-weight: 700; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
@@ -211,7 +238,8 @@
         @media (max-width: 700px) {
             .app-container { padding: 16px; }
             .header { flex-wrap: wrap; }
-            .reziimi-valik { margin-left: 0; width: 100%; justify-content: center; margin-top: 10px; }
+            .top-right-controls { margin-left: 0; }
+            .reziimi-valik { width: 100%; justify-content: center; margin-top: 10px; }
             .lause { font-size: 22px; }
             .input-group { flex-direction: column; }
             .btn { padding: 16px 20px; white-space: normal; }
@@ -223,9 +251,17 @@
         .maskott.roomus { animation: bounce 0.5s ease; }
         @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
         .maskott.kurb { animation: shake 0.4s ease; }
+        .maskott.vasinud { opacity: 0.6; filter: grayscale(0.3); }
+        .maskott.lopetaja { filter: drop-shadow(0 0 8px gold); }
+        .maskott.voitja { animation: bounce 0.3s infinite; }
     </style>
 </head>
 <body>
+
+<!-- Taustaheli (peidetud, kuni kasutaja aktiveerib) -->
+<audio id="taustaheli" loop preload="none">
+    <source src="data:audio/wav;base64,UklGRlwAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACAgICAf39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f38=" type="audio/wav">
+</audio>
 
 <div class="app-container">
     
@@ -233,7 +269,10 @@
         <div class="maskott" id="maskott">🦊</div>
         <div class="header-text">
             <h1>Soome Keele Treener <span>PRO</span></h1>
-            <p>100 sõna • 12 käänet • YKI B2 • Perekond Ojaküla</p>
+            <p>🇫🇮 100 sõna • 50+ käänet • YKI B2 • Perekond Ojaküla 🇫🇮</p>
+        </div>
+        <div class="top-right-controls">
+            <button class="heli-nupp" id="heli-nupp" title="Lülita loodusheli sisse/välja">🔇</button>
         </div>
         <div class="reziimi-valik">
             <button class="reziim-nupp learn" data-reziim="learn"><span>🌱</span><span>100 SÕNA</span></button>
@@ -340,7 +379,7 @@
     
     <div class="footer">
         <div class="footer-autor">🌿 Koostanud südamega Perekond Ojaküla</div>
-        <div class="footer-moto">"Sisu on seiklus – nüüd ka 100 põhisõna mänguliselt!"</div>
+        <div class="footer-moto">"Sisu on seiklus – nüüd Soome lipu värvides!"</div>
         <div class="footer-fakt" id="fakti-kast"><span>🇫🇮</span><span id="fakti-tekst"></span></div>
     </div>
 </div>
@@ -356,6 +395,82 @@
 <script>
     window.addEventListener('DOMContentLoaded', function() {
         "use strict";
+        
+        // ===== KONFETI FUNKTSIOON =====
+        function laseKonfetti() {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            confetti({ particleCount: 100, spread: 100, origin: { y: 0.5, x: 0.3 }, colors: ['#2E5A88', '#FFFFFF', '#4A8BB5'] });
+            confetti({ particleCount: 100, spread: 100, origin: { y: 0.5, x: 0.7 }, colors: ['#2E5A88', '#FFFFFF', '#4A8BB5'] });
+        }
+        
+        // ===== HELI FUNKTSIOONID =====
+        const taustaheli = document.getElementById('taustaheli');
+        const heliNupp = document.getElementById('heli-nupp');
+        let heliAktiivne = false;
+        
+        // Loo lihtne loodusheli (linnulaul + tuul) Web Audio API abil
+        let audioContext = null;
+        let heliAllikas = null;
+        
+        function initHeli() {
+            if (audioContext) return;
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator1 = audioContext.createOscillator();
+                const oscillator2 = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator1.type = 'sine';
+                oscillator1.frequency.value = 880;
+                oscillator2.type = 'sine';
+                oscillator2.frequency.value = 440;
+                
+                gainNode.gain.value = 0.03;
+                
+                oscillator1.connect(gainNode);
+                oscillator2.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator1.start();
+                oscillator2.start();
+                
+                heliAllikas = { oscillator1, oscillator2, gainNode };
+            } catch(e) { console.log('Heli ei toetata'); }
+        }
+        
+        heliNupp.addEventListener('click', () => {
+            if (!heliAktiivne) {
+                initHeli();
+                heliNupp.textContent = '🔊';
+                heliNupp.classList.add('aktiivne');
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                heliAktiivne = true;
+            } else {
+                if (audioContext) {
+                    audioContext.suspend();
+                }
+                heliNupp.textContent = '🔇';
+                heliNupp.classList.remove('aktiivne');
+                heliAktiivne = false;
+            }
+        });
+        
+        // ===== GOOGLE ANALYTICS SÜNDMUSED =====
+        function saadaGA(syndmus, parameetrid = {}) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', syndmus, parameetrid);
+            }
+        }
+        
+        // Jälgi raskusastet
+        function saadaRaskusaste(tase) {
+            if (typeof gtag !== 'undefined') {
+                gtag('set', 'user_properties', { 'raskusaste': tase });
+                gtag('event', 'raskusaste_valitud', { 'event_category': 'seaded', 'event_label': tase });
+            }
+        }
         
         // ===== 100 PÕHISÕNA =====
         const pohisonad = [
@@ -411,14 +526,60 @@
             { soome: "minuutti", eesti: "minut", teema: "⏰ Aeg" }, { soome: "sekunti", eesti: "sekund", teema: "⏰ Aeg" }
         ];
         
-        // ===== KÄÄNDE SÕNASTIK =====
+        // ===== 50+ KÄÄNDSÕNA =====
         const sonad = [
             { id: 1, tyvi: "talo", tolge: "maja", teema: '🏠 Kodu', raske: false, vormid: { inessiiv: "talossa", elatiiv: "talosta", illatiiv: "taloon", partitiiv: "taloa", genitiiv: "talon", abessiiv: "talotta" } },
             { id: 2, tyvi: "metsä", tolge: "mets", teema: '🌍 Keskkond', raske: false, vormid: { inessiiv: "metsässä", elatiiv: "metsästä", illatiiv: "metsään", partitiiv: "metsää", genitiiv: "metsän", abessiiv: "metsättä" } },
             { id: 3, tyvi: "yliopisto", tolge: "ülikool", teema: '📚 Haridus', raske: false, vormid: { inessiiv: "yliopistossa", elatiiv: "yliopistosta", illatiiv: "yliopistoon", partitiiv: "yliopistoa", genitiiv: "yliopiston" } },
             { id: 4, tyvi: "ystävä", tolge: "sõber", teema: '🤝 Suhted', raske: false, vormid: { inessiiv: "ystävässä", elatiiv: "ystävästä", illatiiv: "ystävään", partitiiv: "ystävää", genitiiv: "ystävän", abessiiv: "ystävättä" } },
             { id: 5, tyvi: "kauppa", tolge: "pood", teema: '🏠 Kodu', raske: false, vormid: { inessiiv: "kaupassa", elatiiv: "kaupasta", illatiiv: "kauppaan", partitiiv: "kauppaa", genitiiv: "kaupan" } },
-            { id: 6, tyvi: "lentokenttä", tolge: "lennujaam", teema: '✈️ Reisimine', raske: false, vormid: { inessiiv: "lentokentässä", elatiiv: "lentokentästä", illatiiv: "lentokenttään", partitiiv: "lentokenttää", genitiiv: "lentokentän" } }
+            { id: 6, tyvi: "lentokenttä", tolge: "lennujaam", teema: '✈️ Reisimine', raske: false, vormid: { inessiiv: "lentokentässä", elatiiv: "lentokentästä", illatiiv: "lentokenttään", partitiiv: "lentokenttää", genitiiv: "lentokentän" } },
+            { id: 7, tyvi: "kirjasto", tolge: "raamatukogu", teema: '📚 Haridus', raske: false, vormid: { inessiiv: "kirjastossa", elatiiv: "kirjastosta", illatiiv: "kirjastoon", partitiiv: "kirjastoa", genitiiv: "kirjaston" } },
+            { id: 8, tyvi: "sairaala", tolge: "haigla", teema: '🏥 Tervis', raske: false, vormid: { inessiiv: "sairaalassa", elatiiv: "sairaalasta", illatiiv: "sairaalaan", partitiiv: "sairaalaa", genitiiv: "sairaalan" } },
+            { id: 9, tyvi: "hotelli", tolge: "hotell", teema: '✈️ Reisimine', raske: false, vormid: { inessiiv: "hotellissa", elatiiv: "hotellista", illatiiv: "hotelliin", partitiiv: "hotellia", genitiiv: "hotellin" } },
+            { id: 10, tyvi: "ravintola", tolge: "restoran", teema: '🍎 Toit', raske: false, vormid: { inessiiv: "ravintolassa", elatiiv: "ravintolasta", illatiiv: "ravintolaan", partitiiv: "ravintolaa", genitiiv: "ravintolan" } },
+            { id: 11, tyvi: "puisto", tolge: "park", teema: '🌍 Keskkond', raske: false, vormid: { inessiiv: "puistossa", elatiiv: "puistosta", illatiiv: "puistoon", partitiiv: "puistoa", genitiiv: "puiston" } },
+            { id: 12, tyvi: "koulu", tolge: "kool", teema: '📚 Haridus', raske: false, vormid: { inessiiv: "koulussa", elatiiv: "koulusta", illatiiv: "kouluun", partitiiv: "koulua", genitiiv: "koulun" } },
+            { id: 13, tyvi: "toimisto", tolge: "kontor", teema: '💼 Töö', raske: false, vormid: { inessiiv: "toimistossa", elatiiv: "toimistosta", illatiiv: "toimistoon", partitiiv: "toimistoa", genitiiv: "toimiston" } },
+            { id: 14, tyvi: "tehdas", tolge: "tehas", teema: '💼 Töö', raske: false, vormid: { inessiiv: "tehtaassa", elatiiv: "tehtaasta", illatiiv: "tehtaaseen", partitiiv: "tehdasta", genitiiv: "tehtaan" } },
+            { id: 15, tyvi: " kirkko", tolge: "kirik", teema: '🏛️ Hoone', raske: false, vormid: { inessiiv: "kirkossa", elatiiv: "kirkosta", illatiiv: "kirkkoon", partitiiv: "kirkkoa", genitiiv: "kirkon" } },
+            { id: 16, tyvi: "kahvila", tolge: "kohvik", teema: '🍎 Toit', raske: false, vormid: { inessiiv: "kahvilassa", elatiiv: "kahvilasta", illatiiv: "kahvilaan", partitiiv: "kahvilaa", genitiiv: "kahvilan" } },
+            { id: 17, tyvi: "apteekki", tolge: "apteek", teema: '🏥 Tervis', raske: false, vormid: { inessiiv: "apteekissa", elatiiv: "apteekista", illatiiv: "apteekkiin", partitiiv: "apteekkia", genitiiv: "apteekin" } },
+            { id: 18, tyvi: "pankki", tolge: "pank", teema: '💰 Raha', raske: false, vormid: { inessiiv: "pankissa", elatiiv: "pankista", illatiiv: "pankkiin", partitiiv: "pankkia", genitiiv: "pankin" } },
+            { id: 19, tyvi: "posti", tolge: "postkontor", teema: '📮 Teenus', raske: false, vormid: { inessiiv: "postissa", elatiiv: "postista", illatiiv: "postiin", partitiiv: "postia", genitiiv: "postin" } },
+            { id: 20, tyvi: "poliisiasema", tolge: "politseijaoskond", teema: '🚔 Turvalisus', raske: false, vormid: { inessiiv: "poliisiasemalla", elatiiv: "poliisiasemalta", illatiiv: "poliisiasemalle", partitiiv: "poliisiasemaa", genitiiv: "poliisiaseman" } },
+            { id: 21, tyvi: "uimahalli", tolge: "ujula", teema: '🏊 Sport', raske: false, vormid: { inessiiv: "uimahallissa", elatiiv: "uimahallista", illatiiv: "uimahalliin", partitiiv: "uimahallia", genitiiv: "uimahallin" } },
+            { id: 22, tyvi: "elokuvateatteri", tolge: "kino", teema: '🎭 Kultuur', raske: false, vormid: { inessiiv: "elokuvateatterissa", elatiiv: "elokuvateatterista", illatiiv: "elokuvateatteriin", partitiiv: "elokuvateatteria", genitiiv: "elokuvateatterin" } },
+            { id: 23, tyvi: "museo", tolge: "muuseum", teema: '🎭 Kultuur', raske: false, vormid: { inessiiv: "museossa", elatiiv: "museosta", illatiiv: "museoon", partitiiv: "museota", genitiiv: "museon" } },
+            { id: 24, tyvi: "kirpputori", tolge: "kirbuturg", teema: '🛒 Ostlemine', raske: false, vormid: { inessiiv: "kirpputorilla", elatiiv: "kirpputorilta", illatiiv: "kirpputorille", partitiiv: "kirpputoria", genitiiv: "kirpputorin" } },
+            { id: 25, tyvi: "hautausmaa", tolge: "surnuaed", teema: '🕊️ Muu', raske: false, vormid: { inessiiv: "hautausmaalla", elatiiv: "hautausmaalta", illatiiv: "hautausmaalle", partitiiv: "hautausmaata", genitiiv: "hautausmaan" } },
+            { id: 26, tyvi: "jäähalli", tolge: "jäähall", teema: '🏒 Sport', raske: false, vormid: { inessiiv: "jäähallissa", elatiiv: "jäähallista", illatiiv: "jäähalliin", partitiiv: "jäähallia", genitiiv: "jäähallin" } },
+            { id: 27, tyvi: "kuntosali", tolge: "jõusaal", teema: '💪 Sport', raske: false, vormid: { inessiiv: "kuntosalissa", elatiiv: "kuntosalista", illatiiv: "kuntosaliin", partitiiv: "kuntosalia", genitiiv: "kuntosalin" } },
+            { id: 28, tyvi: "rautatieasema", tolge: "raudteejaam", teema: '🚆 Transport', raske: false, vormid: { inessiiv: "rautatieasemalla", elatiiv: "rautatieasemalta", illatiiv: "rautatieasemalle", partitiiv: "rautatieasemaa", genitiiv: "rautatieaseman" } },
+            { id: 29, tyvi: "bussipysäkki", tolge: "bussipeatus", teema: '🚌 Transport', raske: false, vormid: { inessiiv: "bussipysäkillä", elatiiv: "bussipysäkiltä", illatiiv: "bussipysäkille", partitiiv: "bussipysäkkiä", genitiiv: "bussipysäkin" } },
+            { id: 30, tyvi: "satama", tolge: "sadam", teema: '🚢 Transport', raske: false, vormid: { inessiiv: "satamassa", elatiiv: "satamasta", illatiiv: "satamaan", partitiiv: "satamaa", genitiiv: "sataman" } },
+            { id: 31, tyvi: "keskusta", tolge: "kesklinn", teema: '🏙️ Koht', raske: false, vormid: { inessiiv: "keskustassa", elatiiv: "keskustasta", illatiiv: "keskustaan", partitiiv: "keskustaa", genitiiv: "keskustan" } },
+            { id: 32, tyvi: "lähiö", tolge: "eeslinn", teema: '🏘️ Koht', raske: false, vormid: { inessiiv: "lähiössä", elatiiv: "lähiöstä", illatiiv: "lähiöön", partitiiv: "lähiötä", genitiiv: "lähiön" } },
+            { id: 33, tyvi: "kylä", tolge: "küla", teema: '🏡 Koht', raske: false, vormid: { inessiiv: "kylässä", elatiiv: "kylästä", illatiiv: "kylään", partitiiv: "kylää", genitiiv: "kylän" } },
+            { id: 34, tyvi: "kaupunki", tolge: "linn", teema: '🏙️ Koht', raske: false, vormid: { inessiiv: "kaupungissa", elatiiv: "kaupungista", illatiiv: "kaupunkiin", partitiiv: "kaupunkia", genitiiv: "kaupungin" } },
+            { id: 35, tyvi: "valtio", tolge: "riik", teema: '🗺️ Koht', raske: false, vormid: { inessiiv: "valtiossa", elatiiv: "valtiosta", illatiiv: "valtioon", partitiiv: "valtiota", genitiiv: "valtion" } },
+            { id: 36, tyvi: "Suomi", tolge: "Soome", teema: '🇫🇮 Riik', raske: false, vormid: { inessiiv: "Suomessa", elatiiv: "Suomesta", illatiiv: "Suomeen", partitiiv: "Suomea", genitiiv: "Suomen" } },
+            { id: 37, tyvi: "Viro", tolge: "Eesti", teema: '🇪🇪 Riik', raske: false, vormid: { inessiiv: "Virossa", elatiiv: "Virosta", illatiiv: "Viroon", partitiiv: "Viroa", genitiiv: "Viron" } },
+            { id: 38, tyvi: "Ruotsi", tolge: "Rootsi", teema: '🇸🇪 Riik', raske: false, vormid: { inessiiv: "Ruotsissa", elatiiv: "Ruotsista", illatiiv: "Ruotsiin", partitiiv: "Ruotsia", genitiiv: "Ruotsin" } },
+            { id: 39, tyvi: "Venäjä", tolge: "Venemaa", teema: '🇷🇺 Riik', raske: false, vormid: { inessiiv: "Venäjällä", elatiiv: "Venäjältä", illatiiv: "Venäjälle", partitiiv: "Venäjää", genitiiv: "Venäjän" } },
+            { id: 40, tyvi: "Norja", tolge: "Norra", teema: '🇳🇴 Riik', raske: false, vormid: { inessiiv: "Norjassa", elatiiv: "Norjasta", illatiiv: "Norjaan", partitiiv: "Norjaa", genitiiv: "Norjan" } },
+            { id: 41, tyvi: "Tanska", tolge: "Taani", teema: '🇩🇰 Riik', raske: false, vormid: { inessiiv: "Tanskassa", elatiiv: "Tanskasta", illatiiv: "Tanskaan", partitiiv: "Tanskaa", genitiiv: "Tanskan" } },
+            { id: 42, tyvi: "Saksa", tolge: "Saksamaa", teema: '🇩🇪 Riik', raske: false, vormid: { inessiiv: "Saksassa", elatiiv: "Saksasta", illatiiv: "Saksaan", partitiiv: "Saksaa", genitiiv: "Saksan" } },
+            { id: 43, tyvi: "Ranska", tolge: "Prantsusmaa", teema: '🇫🇷 Riik', raske: false, vormid: { inessiiv: "Ranskassa", elatiiv: "Ranskasta", illatiiv: "Ranskaan", partitiiv: "Ranskaa", genitiiv: "Ranskan" } },
+            { id: 44, tyvi: "Italia", tolge: "Itaalia", teema: '🇮🇹 Riik', raske: false, vormid: { inessiiv: "Italiassa", elatiiv: "Italiasta", illatiiv: "Italiaan", partitiiv: "Italiaa", genitiiv: "Italian" } },
+            { id: 45, tyvi: "Espanja", tolge: "Hispaania", teema: '🇪🇸 Riik', raske: false, vormid: { inessiiv: "Espanjassa", elatiiv: "Espanjasta", illatiiv: "Espanjaan", partitiiv: "Espanjaa", genitiiv: "Espanjan" } },
+            { id: 46, tyvi: "Kiina", tolge: "Hiina", teema: '🇨🇳 Riik', raske: false, vormid: { inessiiv: "Kiinassa", elatiiv: "Kiinasta", illatiiv: "Kiinaan", partitiiv: "Kiinaa", genitiiv: "Kiinan" } },
+            { id: 47, tyvi: "Japani", tolge: "Jaapan", teema: '🇯🇵 Riik', raske: false, vormid: { inessiiv: "Japanissa", elatiiv: "Japanista", illatiiv: "Japaniin", partitiiv: "Japania", genitiiv: "Japanin" } },
+            { id: 48, tyvi: "Intia", tolge: "India", teema: '🇮🇳 Riik', raske: false, vormid: { inessiiv: "Intiassa", elatiiv: "Intiasta", illatiiv: "Intiaan", partitiiv: "Intiaa", genitiiv: "Intian" } },
+            { id: 49, tyvi: "Australia", tolge: "Austraalia", teema: '🇦🇺 Riik', raske: false, vormid: { inessiiv: "Australiassa", elatiiv: "Australiasta", illatiiv: "Australiaan", partitiiv: "Australiaa", genitiiv: "Australian" } },
+            { id: 50, tyvi: "Kanada", tolge: "Kanada", teema: '🇨🇦 Riik', raske: false, vormid: { inessiiv: "Kanadassa", elatiiv: "Kanadasta", illatiiv: "Kanadaan", partitiiv: "Kanadaa", genitiiv: "Kanadan" } },
+            { id: 51, tyvi: "Yhdysvallat", tolge: "USA", teema: '🇺🇸 Riik', raske: false, vormid: { inessiiv: "Yhdysvalloissa", elatiiv: "Yhdysvalloista", illatiiv: "Yhdysvaltoihin", partitiiv: "Yhdysvaltoja", genitiiv: "Yhdysvaltojen" } },
+            { id: 52, tyvi: "Brasilia", tolge: "Brasiilia", teema: '🇧🇷 Riik', raske: false, vormid: { inessiiv: "Brasiliassa", elatiiv: "Brasiliasta", illatiiv: "Brasiliaan", partitiiv: "Brasiliaa", genitiiv: "Brasilian" } }
         ];
         
         const laused = [
@@ -433,7 +594,7 @@
             { mall: "{0} vuoksi myöhästyin.", kaane: "genitiiv", reegel: "Millegi tõttu jäin hiljaks.", tase: "B2" }
         ];
         
-        const faktid = ["PRO versioon: 100 põhisõna + 12 käänet!", "Abessiiv tähendab 'ilma': talotta = ilma majata.", "100 sõna katab ~50% igapäevasest kõnest!"];
+        const faktid = ["🇫🇮 PRO versioon: 100 põhisõna + 50+ käändsõna!", "Abessiiv tähendab 'ilma': talotta = ilma majata.", "100 sõna katab ~50% igapäevasest kõnest!", "Soome lipul on sinine rist valgel taustal – nagu meie rakendus!"];
         const kaandeNimed = { 'inessiiv': 'inessiiv (-ssa/-ssä)', 'elatiiv': 'elatiiv (-sta/-stä)', 'illatiiv': 'illatiiv (-Vn/-seen)', 'partitiiv': 'partitiiv (-a/-ä/-ta/-tä)', 'genitiiv': 'genitiiv (-n)', 'abessiiv': 'abessiiv (-tta/-ttä)' };
         
         // ===== SEISUND =====
@@ -443,13 +604,12 @@
         let maratoniRekord = localStorage.getItem('maratonRekord') ? parseInt(localStorage.getItem('maratonRekord')) : 0;
         let testKysimused = [], testIndeks = 0, testOiged = 0, testValedSonad = [];
         
-        // 100 sõna mäng
         let opitudSonad = JSON.parse(localStorage.getItem('opitudSonad') || '[]');
         let learnSeeria = 0, learnRekord = localStorage.getItem('learnRekord') ? parseInt(localStorage.getItem('learnRekord')) : 0;
         let hetkelSonaMang = null, vastatud = false;
         let manguOigeid = 0, manguKokku = 0, manguAlustatud = false;
         
-        // DOM
+        // DOM elemendid
         const maskottEl = document.getElementById('maskott'), treenerVaade = document.getElementById('treener-vaade');
         const learnVaade = document.getElementById('learn-vaade'), taseValik = document.getElementById('tase-valik');
         const seeriaNrEl = document.getElementById('seeria-nr'), mustikadEl = document.querySelectorAll('.mustikas');
@@ -466,7 +626,6 @@
         const taseNupud = document.querySelectorAll('.tase-nupp'), testModal = document.getElementById('test-modal');
         const testSisu = document.getElementById('test-sisu'), testClose = document.getElementById('test-close');
         
-        // 100 sõna elemendid
         const opitudArvEl = document.getElementById('opitud-arv'), mustikadKorvisEl = document.getElementById('mustikad-korvis-mang');
         const learnSeeriaEl = document.getElementById('learn-seeria'), learnRekordEl = document.getElementById('learn-rekord');
         const learnTeemaEl = document.getElementById('learn-teema'), sonaKaartEl = document.getElementById('sona-kaart');
@@ -483,7 +642,16 @@
         function uuendaMustikaid() { const t = Math.min(Math.floor(oigeidJarjest/2), 5); mustikadEl.forEach((e,i)=> e.classList.toggle('taidetud', i<t)); }
         function uuendaSeeria() { seeriaNrEl.textContent = seeria; }
         function uuendaTaseNupud() { taseNupud.forEach(n => n.classList.toggle('aktiivne-tase', n.dataset.tase === aktiivneTase)); }
-        function muudaMaskotiEmotsioon(e) { maskottEl.className = 'maskott ' + (e==='roomus'?'roomus':(e==='kurb'?'kurb':'')); setTimeout(()=> maskottEl.className = 'maskott', 600); }
+        function muudaMaskotiEmotsioon(emotsioon) {
+            maskottEl.className = 'maskott';
+            if (emotsioon === 'roomus') maskottEl.classList.add('roomus');
+            else if (emotsioon === 'kurb') maskottEl.classList.add('kurb');
+            else if (emotsioon === 'vasinud') maskottEl.classList.add('vasinud');
+            else if (emotsioon === 'lopetaja') maskottEl.classList.add('lopetaja');
+            else if (emotsioon === 'voitja') maskottEl.classList.add('voitja');
+            
+            setTimeout(() => maskottEl.className = 'maskott', 1000);
+        }
         function salvestaEdusammud() { localStorage.setItem('soomeTreenerPRO', JSON.stringify({sonad: sonad.map(s=>({id:s.id, raske:s.raske})), seeria, oigeidJarjest, tase: aktiivneTase})); }
         
         // ===== 100 SÕNA MÄNG =====
@@ -516,15 +684,9 @@
         
         function naitaSonaMang() {
             hetkelSonaMang = valiJuhuslikSonaMang();
-            
-            if (!hetkelSonaMang) {
-                lopetaMangFunc();
-                return;
-            }
-            
+            if (!hetkelSonaMang) { lopetaMangFunc(); return; }
             sonaKaartEl.textContent = hetkelSonaMang.soome.toUpperCase();
             learnTeemaEl.textContent = hetkelSonaMang.teema;
-            
             const variandid = genereeriVariandid(hetkelSonaMang);
             variandidContainer.innerHTML = '';
             variandid.forEach(v => {
@@ -534,84 +696,57 @@
                 btn.addEventListener('click', () => kontrolliSonaVastus(v, btn));
                 variandidContainer.appendChild(btn);
             });
-            
-            vastatud = false;
-            learnJargmine.style.display = 'none';
+            vastatud = false; learnJargmine.style.display = 'none';
             manguTagasiside.className = 'tagasiside info';
             manguTagasiside.innerHTML = '<span>👆 Vali õige tõlge!</span>';
             learnSeeriaEl.textContent = learnSeeria;
         }
         
         function kontrolliSonaVastus(valitud, btn) {
-            if (vastatud) return;
-            vastatud = true;
-            manguKokku++;
-            
+            if (vastatud) return; vastatud = true; manguKokku++;
             const onOige = valitud === hetkelSonaMang.eesti;
             const nupud = document.querySelectorAll('.variant-nupp');
-            
             if (onOige) {
-                btn.classList.add('oige');
-                manguTagasiside.className = 'tagasiside oige';
+                btn.classList.add('oige'); manguTagasiside.className = 'tagasiside oige';
                 manguTagasiside.innerHTML = `<span>✅ Õige! ${hetkelSonaMang.soome} = ${hetkelSonaMang.eesti}</span>`;
-                muudaMaskotiEmotsioon('roomus');
-                
-                manguOigeid++;
-                learnSeeria++;
+                muudaMaskotiEmotsioon('roomus'); manguOigeid++; learnSeeria++;
                 learnSeeriaEl.textContent = learnSeeria;
                 if (learnSeeria > learnRekord) { learnRekord = learnSeeria; localStorage.setItem('learnRekord', learnRekord); learnRekordEl.textContent = learnRekord; }
-                
                 const indeks = pohisonad.findIndex(s => s.soome === hetkelSonaMang.soome);
                 if (!opitudSonad.includes(indeks)) { opitudSonad.push(indeks); localStorage.setItem('opitudSonad', JSON.stringify(opitudSonad)); uuendaKorvi(); }
-                
-                // Saavutused
                 const opitud = opitudSonad.length;
-                if (opitud === 10) saavutusContainer.innerHTML = '<div class="saavutus-teade">🌱 Algaja! 10 sõna selge!</div>';
-                else if (opitud === 50) saavutusContainer.innerHTML = '<div class="saavutus-teade">🌿 Pool maas! 50 sõna selge!</div>';
-                else if (opitud === 100) saavutusContainer.innerHTML = '<div class="saavutus-teade">🌳 MEISTER! Kõik 100 sõna selge! 🎉</div>';
-                
+                if (opitud === 10) { saavutusContainer.innerHTML = '<div class="saavutus-teade">🌱 Algaja! 10 sõna selge!</div>'; muudaMaskotiEmotsioon('lopetaja'); }
+                else if (opitud === 50) { saavutusContainer.innerHTML = '<div class="saavutus-teade">🌿 Pool maas! 50 sõna selge!</div>'; muudaMaskotiEmotsioon('lopetaja'); }
+                else if (opitud === 100) { 
+                    saavutusContainer.innerHTML = '<div class="saavutus-teade">🌳 MEISTER! Kõik 100 sõna selge! 🎉</div>'; 
+                    muudaMaskotiEmotsioon('voitja'); laseKonfetti();
+                    saadaGA('100_sona_valmis', { event_category: 'saavutus' });
+                }
                 setTimeout(() => { if (opitudSonad.length < 100) saavutusContainer.innerHTML = ''; }, 3000);
-                
                 learnJargmine.style.display = 'block';
             } else {
-                btn.classList.add('vale');
-                nupud.forEach(n => { if (n.textContent === hetkelSonaMang.eesti) n.classList.add('oige'); });
-                manguTagasiside.className = 'tagasiside vale';
-                manguTagasiside.innerHTML = `<span>❌ Vale! Õige vastus on: ${hetkelSonaMang.eesti}</span>`;
-                muudaMaskotiEmotsioon('kurb');
-                learnSeeria = 0; learnSeeriaEl.textContent = learnSeeria;
+                btn.classList.add('vale'); nupud.forEach(n => { if (n.textContent === hetkelSonaMang.eesti) n.classList.add('oige'); });
+                manguTagasiside.className = 'tagasiside vale'; manguTagasiside.innerHTML = `<span>❌ Vale! Õige vastus on: ${hetkelSonaMang.eesti}</span>`;
+                muudaMaskotiEmotsioon('kurb'); learnSeeria = 0; learnSeeriaEl.textContent = learnSeeria;
                 learnJargmine.style.display = 'block';
             }
-            
             nupud.forEach(n => n.disabled = true);
-            
-            if (opitudSonad.length === 100) {
-                setTimeout(() => lopetaMangFunc(), 1000);
-            }
+            if (opitudSonad.length === 100) setTimeout(() => lopetaMangFunc(), 1000);
         }
         
         function lopetaMangFunc() {
-            manguAla.style.display = 'none';
-            manguNupud.style.display = 'none';
-            tulemusVaade.style.display = 'block';
-            
+            manguAla.style.display = 'none'; manguNupud.style.display = 'none'; tulemusVaade.style.display = 'block';
             const protsent = manguKokku > 0 ? Math.round((manguOigeid / manguKokku) * 100) : 0;
-            tulemusProtsent.textContent = protsent + '%';
-            tulemusOigeid.textContent = manguOigeid;
-            tulemusKokku.textContent = manguKokku;
-            tulemusRekord.textContent = learnRekord;
+            tulemusProtsent.textContent = protsent + '%'; tulemusOigeid.textContent = manguOigeid;
+            tulemusKokku.textContent = manguKokku; tulemusRekord.textContent = learnRekord;
         }
         
         function alustaUutMangu() {
             opitudSonad = []; localStorage.setItem('opitudSonad', '[]');
             learnSeeria = 0; manguOigeid = 0; manguKokku = 0; manguAlustatud = true;
-            uuendaKorvi();
-            learnSeeriaEl.textContent = '0';
-            manguAla.style.display = 'block';
-            manguNupud.style.display = 'flex';
-            tulemusVaade.style.display = 'none';
-            saavutusContainer.innerHTML = '';
-            naitaSonaMang();
+            uuendaKorvi(); learnSeeriaEl.textContent = '0';
+            manguAla.style.display = 'block'; manguNupud.style.display = 'flex'; tulemusVaade.style.display = 'none';
+            saavutusContainer.innerHTML = ''; naitaSonaMang();
         }
         
         // ===== HARJUTA FUNKTSIOONID =====
@@ -638,8 +773,36 @@
         function kontrolliVastust() {
             let v = vastusInput.value.trim().toLowerCase().replace(/[.,!?]+$/, '');
             const onOige = v === hetkelOigeVastus.toLowerCase();
-            if (onOige) { seeria++; oigeidJarjest++; uuendaSeeria(); uuendaMustikaid(); muudaMaskotiEmotsioon('roomus'); tagasisideKast.className='tagasiside oige'; tagasisideIkoon.textContent='✅'; if (aktiivneReziim === 'maraton') { tagasisideTekst.textContent = `🔥 Oikein! Seeria: ${seeria}`; uusLause(); } else { tagasisideTekst.textContent = `Oikein! ${hetkelOigeVastus}`; vastusInput.disabled = true; kontrolliNupp.style.display='none'; jargmineNupp.style.display='block'; } reegeliNupp.classList.add('hidden'); katseteLuger.textContent = ''; }
-            else { katsed++; muudaMaskotiEmotsioon('kurb'); tagasisideKast.className='tagasiside vale'; tagasisideIkoon.textContent='❌'; if (aktiivneReziim === 'maraton') { tagasisideTekst.textContent = `💔 Maraton läbi! Seeria: ${seeria}. Õige: ${hetkelOigeVastus}`; if (seeria > maratoniRekord) { maratoniRekord = seeria; localStorage.setItem('maratonRekord', maratoniRekord); tagasisideTekst.textContent += ` 🏆 UUS REKORD!`; } vastusInput.disabled = true; kontrolliNupp.style.display='none'; jargmineNupp.style.display='block'; seeria = 0; oigeidJarjest = 0; uuendaSeeria(); uuendaMustikaid(); } else { if (katsed >= 3) { tagasisideTekst.textContent = `Väärin. Oikea: ${hetkelOigeVastus}`; vastusInput.disabled = true; kontrolliNupp.style.display='none'; jargmineNupp.style.display='block'; if(aktiivneReziim!=='test') { seeria=0; oigeidJarjest=0; uuendaSeeria(); uuendaMustikaid(); } } else { tagasisideTekst.textContent = `Väärin. Yritä uudelleen!`; katseteLuger.textContent = `${katsed}/3 yritystä`; reegeliNupp.classList.remove('hidden'); vastusInput.value = ''; vastusInput.focus(); } } }
+            if (onOige) { 
+                seeria++; oigeidJarjest++; uuendaSeeria(); uuendaMustikaid(); muudaMaskotiEmotsioon('roomus'); 
+                tagasisideKast.className='tagasiside oige'; tagasisideIkoon.textContent='✅'; 
+                if (aktiivneReziim === 'maraton') { 
+                    tagasisideTekst.textContent = `🔥 Oikein! Seeria: ${seeria}`; uusLause(); 
+                } else { 
+                    tagasisideTekst.textContent = `Oikein! ${hetkelOigeVastus}`; vastusInput.disabled = true; kontrolliNupp.style.display='none'; jargmineNupp.style.display='block'; 
+                } 
+                reegeliNupp.classList.add('hidden'); katseteLuger.textContent = ''; 
+            } else { 
+                katsed++; muudaMaskotiEmotsioon('kurb'); tagasisideKast.className='tagasiside vale'; tagasisideIkoon.textContent='❌'; 
+                if (aktiivneReziim === 'maraton') { 
+                    tagasisideTekst.textContent = `💔 Maraton läbi! Seeria: ${seeria}. Õige: ${hetkelOigeVastus}`; 
+                    if (seeria > maratoniRekord) { 
+                        maratoniRekord = seeria; localStorage.setItem('maratonRekord', maratoniRekord); 
+                        tagasisideTekst.textContent += ` 🏆 UUS REKORD!`; laseKonfetti(); muudaMaskotiEmotsioon('voitja');
+                        saadaGA('maraton_record', { event_category: 'saavutus', value: maratoniRekord });
+                    } 
+                    vastusInput.disabled = true; kontrolliNupp.style.display='none'; jargmineNupp.style.display='block'; 
+                    seeria = 0; oigeidJarjest = 0; uuendaSeeria(); uuendaMustikaid(); 
+                } else { 
+                    if (katsed >= 3) { 
+                        tagasisideTekst.textContent = `Väärin. Oikea: ${hetkelOigeVastus}`; vastusInput.disabled = true; kontrolliNupp.style.display='none'; jargmineNupp.style.display='block'; 
+                        if(aktiivneReziim!=='test') { seeria=0; oigeidJarjest=0; uuendaSeeria(); uuendaMustikaid(); } 
+                    } else { 
+                        tagasisideTekst.textContent = `Väärin. Yritä uudelleen!`; katseteLuger.textContent = `${katsed}/3 yritystä`; 
+                        reegeliNupp.classList.remove('hidden'); vastusInput.value = ''; vastusInput.focus(); 
+                    } 
+                } 
+            }
             salvestaEdusammud();
         }
         
@@ -682,6 +845,11 @@
             let soovitatavTase = protsent >= 80 ? 'B2' : (protsent >= 60 ? 'B1' : 'A2');
             testValedSonad.forEach(id => { const sona = sonad.find(s => s.id === id); if (sona) sona.raske = true; });
             salvestaEdusammud();
+            
+            saadaGA('test_completed', { event_category: 'test', event_label: aktiivneTase, value: protsent });
+            
+            if (protsent === 100) { laseKonfetti(); muudaMaskotiEmotsioon('voitja'); }
+            
             alert(`TEST LÄBI!\n\nTulemus: ${testOiged}/15 (${protsent}%)\nTesti tase: ${aktiivneTase}\nSoovitatav tase: ${soovitatavTase}\n\n${testValedSonad.length} sõna märgitud raskeks.`);
             aktiivneReziim = 'harjuta'; reziimNupud.forEach(n => n.classList.remove('aktiivne'));
             document.querySelector(`.reziim-nupp[data-reziim="harjuta"]`).classList.add('aktiivne'); 
@@ -693,11 +861,11 @@
         function vahetaReziim(reziim) {
             aktiivneReziim = reziim; reziimNupud.forEach(n => n.classList.remove('aktiivne'));
             document.querySelector(`.reziim-nupp[data-reziim="${reziim}"]`).classList.add('aktiivne');
+            saadaGA('reziim_valitud', { event_category: 'reziim', event_label: reziim });
             
             if (reziim === 'learn') {
                 treenerVaade.style.display = 'none'; learnVaade.style.display = 'block'; taseValik.style.display = 'none';
-                uuendaKorvi(); 
-                if (!manguAlustatud) { alustaUutMangu(); } 
+                uuendaKorvi(); if (!manguAlustatud) { alustaUutMangu(); } 
                 else if (opitudSonad.length < 100) { manguAla.style.display = 'block'; manguNupud.style.display = 'flex'; tulemusVaade.style.display = 'none'; naitaSonaMang(); }
             } else {
                 treenerVaade.style.display = 'block'; learnVaade.style.display = 'none'; taseValik.style.display = 'flex';
@@ -712,6 +880,7 @@
             uuendaTaseNupud(); uuendaKorvi(); learnRekordEl.textContent = learnRekord;
             faktiTekst.textContent = faktid[Math.floor(Math.random()*faktid.length)];
             valiJuhuslikLause();
+            saadaRaskusaste(aktiivneTase);
             
             kontrolliNupp.addEventListener('click', kontrolliVastust);
             jargmineNupp.addEventListener('click', uusLause);
@@ -724,10 +893,9 @@
             importFail.addEventListener('change', (e)=> { const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); d.sonad.forEach(s=>{ const x=sonad.find(y=>y.id===s.id); if(x)x.raske=s.raske; }); seeria=d.seeria||0; oigeidJarjest=d.oigeidJarjest||0; if(d.tase) { aktiivneTase=d.tase; uuendaTaseNupud(); } if(d.opitudSonad) { opitudSonad = d.opitudSonad; localStorage.setItem('opitudSonad', JSON.stringify(opitudSonad)); uuendaKorvi(); } uuendaSeeria(); uuendaMustikaid(); salvestaEdusammud(); uusLause(); }catch(e){alert('Vigane fail');} }; r.readAsText(f); importFail.value=''; });
             vastusInput.addEventListener('keypress', e=> { if(e.key==='Enter' && !vastusInput.disabled) kontrolliVastust(); });
             reziimNupud.forEach(n => n.addEventListener('click', () => vahetaReziim(n.dataset.reziim)));
-            taseNupud.forEach(n => n.addEventListener('click', () => { aktiivneTase = n.dataset.tase; uuendaTaseNupud(); if(aktiivneReziim!=='learn') uusLause(); salvestaEdusammud(); }));
+            taseNupud.forEach(n => n.addEventListener('click', () => { aktiivneTase = n.dataset.tase; uuendaTaseNupud(); saadaRaskusaste(aktiivneTase); if(aktiivneReziim!=='learn') uusLause(); salvestaEdusammud(); }));
             testClose.addEventListener('click', () => { testModal.style.display = 'none'; aktiivneReziim = 'harjuta'; reziimNupud.forEach(n => n.classList.remove('aktiivne')); document.querySelector(`.reziim-nupp[data-reziim="harjuta"]`).classList.add('aktiivne'); });
             
-            // 100 sõna mängu nupud
             learnJargmine.addEventListener('click', naitaSonaMang);
             learnUusMang.addEventListener('click', ()=> { if(confirm('Alustada uut mängu? Kõik edusammud nullitakse.')) alustaUutMangu(); });
             lopetaMang.addEventListener('click', lopetaMangFunc);
