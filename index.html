@@ -235,6 +235,16 @@
         
         .hidden { display: none !important; }
         
+        /* Test modaali lisastiilid */
+        .test-progress {
+            font-size: 14px; color: var(--text-light); margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .test-kysimus {
+            font-family: var(--font-heading); font-size: 26px; font-weight: 500;
+            color: var(--text-dark); margin-bottom: 12px; text-align: center;
+        }
+        
         @media (max-width: 700px) {
             .app-container { padding: 16px; }
             .header { flex-wrap: wrap; }
@@ -542,7 +552,7 @@
             { id: 12, tyvi: "koulu", tolge: "kool", teema: '📚 Haridus', raske: false, vormid: { inessiiv: "koulussa", elatiiv: "koulusta", illatiiv: "kouluun", partitiiv: "koulua", genitiiv: "koulun" } },
             { id: 13, tyvi: "toimisto", tolge: "kontor", teema: '💼 Töö', raske: false, vormid: { inessiiv: "toimistossa", elatiiv: "toimistosta", illatiiv: "toimistoon", partitiiv: "toimistoa", genitiiv: "toimiston" } },
             { id: 14, tyvi: "tehdas", tolge: "tehas", teema: '💼 Töö', raske: false, vormid: { inessiiv: "tehtaassa", elatiiv: "tehtaasta", illatiiv: "tehtaaseen", partitiiv: "tehdasta", genitiiv: "tehtaan" } },
-            { id: 15, tyvi: " kirkko", tolge: "kirik", teema: '🏛️ Hoone', raske: false, vormid: { inessiiv: "kirkossa", elatiiv: "kirkosta", illatiiv: "kirkkoon", partitiiv: "kirkkoa", genitiiv: "kirkon" } },
+            { id: 15, tyvi: "kirkko", tolge: "kirik", teema: '🏛️ Hoone', raske: false, vormid: { inessiiv: "kirkossa", elatiiv: "kirkosta", illatiiv: "kirkkoon", partitiiv: "kirkkoa", genitiiv: "kirkon" } },
             { id: 16, tyvi: "kahvila", tolge: "kohvik", teema: '🍎 Toit', raske: false, vormid: { inessiiv: "kahvilassa", elatiiv: "kahvilasta", illatiiv: "kahvilaan", partitiiv: "kahvilaa", genitiiv: "kahvilan" } },
             { id: 17, tyvi: "apteekki", tolge: "apteek", teema: '🏥 Tervis', raske: false, vormid: { inessiiv: "apteekissa", elatiiv: "apteekista", illatiiv: "apteekkiin", partitiiv: "apteekkia", genitiiv: "apteekin" } },
             { id: 18, tyvi: "pankki", tolge: "pank", teema: '💰 Raha', raske: false, vormid: { inessiiv: "pankissa", elatiiv: "pankista", illatiiv: "pankkiin", partitiiv: "pankkia", genitiiv: "pankin" } },
@@ -806,7 +816,7 @@
             salvestaEdusammud();
         }
         
-        // ===== TESTI FUNKTSIOONID =====
+        // ===== TESTI FUNKTSIOONID (PARANDATUD!) =====
         function alustaTesti() {
             testKysimused = []; testIndeks = 0; testOiged = 0; testValedSonad = [];
             const testiLaused = filtreeriLausedTasemeJargi(aktiivneTase);
@@ -832,10 +842,20 @@
             `;
             document.getElementById('test-vasta').addEventListener('click', () => {
                 const vastus = document.getElementById('test-vastus').value.trim().toLowerCase();
-                const oige = testKysimused[testIndeks].vastus, tagasiside = document.getElementById('test-tagasiside');
-                if (vastus === oige) { testOiged++; tagasiside.className = 'tagasiside oige'; tagasiside.textContent = `✅ Õige! ${oige}`; } 
-                else { testValedSonad.push(testKysimused[testIndeks].sona.id); tagasiside.className = 'tagasiside vale'; tagasiside.textContent = `❌ Vale! Õige: ${oige}`; }
-                testIndeks++; setTimeout(() => naitaTestiKysimust(), 700);
+                const oige = testKysimused[testIndeks].vastus;
+                const tagasiside = document.getElementById('test-tagasiside');
+                // PARANDATUD RIDA – mõlemad pooled väiketähtedeks
+                if (vastus === oige.toLowerCase()) {
+                    testOiged++;
+                    tagasiside.className = 'tagasiside oige';
+                    tagasiside.textContent = `✅ Õige! ${oige}`;
+                } else {
+                    testValedSonad.push(testKysimused[testIndeks].sona.id);
+                    tagasiside.className = 'tagasiside vale';
+                    tagasiside.textContent = `❌ Vale! Õige: ${oige}`;
+                }
+                testIndeks++;
+                setTimeout(() => naitaTestiKysimust(), 700);
             });
             document.getElementById('test-vastus').addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('test-vasta').click(); });
         }
