@@ -115,6 +115,18 @@
         }
         .tase-nupp.aktiivne-tase { background: var(--accent-lightblue); color: white; font-weight: 700; }
         
+        /* 100 sõna mängu taseme nupud (rohelised toonid) */
+        .learn-tase-valik {
+            display: flex; gap: 6px; justify-content: center; margin-bottom: 16px;
+            padding: 8px 0; border-bottom: 1px solid rgba(168, 213, 186, 0.3);
+        }
+        .learn-tase-nupp {
+            padding: 8px 18px; font-size: 13px; font-family: var(--font-heading); font-weight: 600;
+            border: none; border-radius: 30px; cursor: pointer; background: rgba(168, 213, 186, 0.2);
+            color: var(--text-light); transition: all 0.2s ease;
+        }
+        .learn-tase-nupp.aktiivne-learn-tase { background: var(--learn-green); color: var(--text-dark); font-weight: 700; }
+        
         .progress-section {
             display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;
             background: linear-gradient(135deg, rgba(46, 90, 136, 0.05) 0%, rgba(74, 139, 181, 0.05) 100%);
@@ -212,6 +224,9 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px solid var(--accent-blue);
             font-size: 42px; font-weight: 700; text-align: center;
         }
+        .sona-kaart.b2-sisend {
+            font-size: 28px; padding: 24px 20px;
+        }
         .variandid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
         .variant-nupp {
             padding: 18px 10px; font-size: 18px; font-family: var(--font-body);
@@ -232,8 +247,20 @@
             padding: 24px; border-radius: 20px; text-align: center; margin: 20px 0;
         }
         .tulemus-protsent { font-size: 64px; font-weight: 700; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        .tulemus-kaart.learn-tulemus {
+            background: linear-gradient(135deg, var(--learn-green) 0%, #7BC89C 100%);
+        }
         
         .hidden { display: none !important; }
+        
+        /* B2 kirjutamisala 100 sõna mängus */
+        .b2-sisend-ala {
+            margin: 20px 0;
+        }
+        .b2-info {
+            font-size: 14px; color: var(--text-light); margin-bottom: 10px;
+            font-style: italic;
+        }
         
         /* Test modaali lisastiilid */
         .test-progress {
@@ -243,6 +270,17 @@
         .test-kysimus {
             font-family: var(--font-heading); font-size: 26px; font-weight: 500;
             color: var(--text-dark); margin-bottom: 12px; text-align: center;
+        }
+        
+        .learn-tase-indikaator {
+            display: inline-block;
+            background: var(--accent-gold);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 8px;
+            vertical-align: middle;
         }
         
         @media (max-width: 700px) {
@@ -255,6 +293,7 @@
             .btn { padding: 16px 20px; white-space: normal; }
             .sona-kaart { font-size: 32px; }
             .variandid { grid-template-columns: 1fr; }
+            .b2-sisend-ala .input-group { flex-direction: column; }
         }
         
         @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
@@ -296,6 +335,13 @@
         <button class="tase-nupp" data-tase="A2">🟢 A2</button>
         <button class="tase-nupp aktiivne-tase" data-tase="B1">🟡 B1</button>
         <button class="tase-nupp" data-tase="B2">🔴 B2</button>
+    </div>
+    
+    <!-- 100 sõna mängu taseme valik (nähtav ainult learn režiimis) -->
+    <div class="learn-tase-valik" id="learn-tase-valik" style="display: none;">
+        <button class="learn-tase-nupp" data-learn-tase="A1">🟢 A1 – Soome → Eesti</button>
+        <button class="learn-tase-nupp aktiivne-learn-tase" data-learn-tase="B1">🟡 B1 – Eesti → Soome</button>
+        <button class="learn-tase-nupp" data-learn-tase="B2">🔴 B2 – Kirjuta ise</button>
     </div>
     
     <!-- HARJUTA / MARATON VAADE -->
@@ -344,7 +390,10 @@
     <div id="learn-vaade" style="display: none;">
         <div class="korv-container">
             <div class="korv-ikoon">🧺</div>
-            <div style="font-weight: 600; margin-bottom: 8px;">Sinu saak: <span id="opitud-arv">0</span> / 100 🫐</div>
+            <div style="font-weight: 600; margin-bottom: 8px;">
+                Sinu saak: <span id="opitud-arv">0</span> / 100 🫐
+                <span class="learn-tase-indikaator" id="learn-tase-indikaator">A1</span>
+            </div>
             <div class="mustikad-korvis" id="mustikad-korvis-mang"></div>
             <div style="font-size: 14px; color: var(--text-light); margin-top: 8px;">
                 🔥 Seeria: <span id="learn-seeria">0</span> | 🏆 Rekord: <span id="learn-rekord">0</span>
@@ -354,15 +403,27 @@
         <div id="mangu-ala">
             <div class="teema-badge" id="learn-teema" style="margin-bottom: 10px;">🏠 Kodu</div>
             <div class="sona-kaart" id="sona-kaart">TALO</div>
-            <div style="text-align: center; margin-bottom: 16px; color: var(--text-light);">Mida see tähendab?</div>
+            <div style="text-align: center; margin-bottom: 16px; color: var(--text-light);" id="learn-kysimus">Mida see tähendab?</div>
+            
+            <!-- Valikvastused A1 ja B1 tasemele -->
             <div class="variandid" id="variandid-container"></div>
+            
+            <!-- B2 kirjutamise ala -->
+            <div class="b2-sisend-ala hidden" id="b2-sisend-ala">
+                <div class="b2-info">Kirjuta soome keeles (ilma valikvastusteta):</div>
+                <div class="input-group">
+                    <input type="text" class="vastus-input" id="b2-mangu-vastus" placeholder="Kirjuta soome sõna..." autocomplete="off">
+                    <button class="btn btn-small" id="b2-kontrolli-nupp">Kontrolli</button>
+                </div>
+            </div>
+            
             <div id="mangu-tagasiside" class="tagasiside info" style="margin-top: 10px;">
                 <span>👆 Vali õige tõlge!</span>
             </div>
         </div>
         
         <div id="tulemus-vaade" style="display: none;">
-            <div class="tulemus-kaart">
+            <div class="tulemus-kaart learn-tulemus">
                 <div style="font-size: 24px; color: white; margin-bottom: 10px;">🎉 MÄNG LÄBI! 🎉</div>
                 <div class="tulemus-protsent" id="tulemus-protsent">0%</div>
                 <div style="font-size: 18px; color: white; margin-top: 10px;">
@@ -414,11 +475,8 @@
         }
         
         // ===== HELI FUNKTSIOONID =====
-        const taustaheli = document.getElementById('taustaheli');
         const heliNupp = document.getElementById('heli-nupp');
         let heliAktiivne = false;
-        
-        // Loo lihtne loodusheli (linnulaul + tuul) Web Audio API abil
         let audioContext = null;
         let heliAllikas = null;
         
@@ -429,21 +487,16 @@
                 const oscillator1 = audioContext.createOscillator();
                 const oscillator2 = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
-                
                 oscillator1.type = 'sine';
                 oscillator1.frequency.value = 880;
                 oscillator2.type = 'sine';
                 oscillator2.frequency.value = 440;
-                
                 gainNode.gain.value = 0.03;
-                
                 oscillator1.connect(gainNode);
                 oscillator2.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-                
                 oscillator1.start();
                 oscillator2.start();
-                
                 heliAllikas = { oscillator1, oscillator2, gainNode };
             } catch(e) { console.log('Heli ei toetata'); }
         }
@@ -458,9 +511,7 @@
                 }
                 heliAktiivne = true;
             } else {
-                if (audioContext) {
-                    audioContext.suspend();
-                }
+                if (audioContext) audioContext.suspend();
                 heliNupp.textContent = '🔇';
                 heliNupp.classList.remove('aktiivne');
                 heliAktiivne = false;
@@ -469,12 +520,8 @@
         
         // ===== GOOGLE ANALYTICS SÜNDMUSED =====
         function saadaGA(syndmus, parameetrid = {}) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', syndmus, parameetrid);
-            }
+            if (typeof gtag !== 'undefined') gtag('event', syndmus, parameetrid);
         }
-        
-        // Jälgi raskusastet
         function saadaRaskusaste(tase) {
             if (typeof gtag !== 'undefined') {
                 gtag('set', 'user_properties', { 'raskusaste': tase });
@@ -604,11 +651,17 @@
             { mall: "{0} vuoksi myöhästyin.", kaane: "genitiiv", reegel: "Millegi tõttu jäin hiljaks.", tase: "B2" }
         ];
         
-        const faktid = ["🇫🇮 PRO versioon: 100 põhisõna + 50+ käändsõna!", "Abessiiv tähendab 'ilma': talotta = ilma majata.", "100 sõna katab ~50% igapäevasest kõnest!", "Soome lipul on sinine rist valgel taustal – nagu meie rakendus!"];
+        const faktid = [
+            "🇫🇮 PRO versioon: 100 põhisõna + 50+ käändsõna!",
+            "Abessiiv tähendab 'ilma': talotta = ilma majata.",
+            "100 sõna katab ~50% igapäevasest kõnest!",
+            "Soome lipul on sinine rist valgel taustal – nagu meie rakendus!",
+            "B2 tasemel pead ise soome sõna kirjutama – päris väljakutse!"
+        ];
         const kaandeNimed = { 'inessiiv': 'inessiiv (-ssa/-ssä)', 'elatiiv': 'elatiiv (-sta/-stä)', 'illatiiv': 'illatiiv (-Vn/-seen)', 'partitiiv': 'partitiiv (-a/-ä/-ta/-tä)', 'genitiiv': 'genitiiv (-n)', 'abessiiv': 'abessiiv (-tta/-ttä)' };
         
         // ===== SEISUND =====
-        let aktiivneReziim = "harjuta", aktiivneTase = "B1";
+        let aktiivneReziim = "harjuta", aktiivneTase = "B1", aktiivneLearnTase = "A1";
         let hetkelLause = null, hetkelSona = null, hetkelKaane = null, hetkelOigeVastus = "";
         let katsed = 0, seeria = 0, oigeidJarjest = 0, harjutaRaskeidAinult = false;
         let maratoniRekord = localStorage.getItem('maratonRekord') ? parseInt(localStorage.getItem('maratonRekord')) : 0;
@@ -622,6 +675,7 @@
         // DOM elemendid
         const maskottEl = document.getElementById('maskott'), treenerVaade = document.getElementById('treener-vaade');
         const learnVaade = document.getElementById('learn-vaade'), taseValik = document.getElementById('tase-valik');
+        const learnTaseValik = document.getElementById('learn-tase-valik');
         const seeriaNrEl = document.getElementById('seeria-nr'), mustikadEl = document.querySelectorAll('.mustikas');
         const lauseKuvaEl = document.getElementById('lause-kuva'), vihjeSonaEl = document.getElementById('vihje-sona');
         const kaandeInfoEl = document.getElementById('kaande-info'), teemaBadgeEl = document.getElementById('teema-badge');
@@ -639,7 +693,10 @@
         const opitudArvEl = document.getElementById('opitud-arv'), mustikadKorvisEl = document.getElementById('mustikad-korvis-mang');
         const learnSeeriaEl = document.getElementById('learn-seeria'), learnRekordEl = document.getElementById('learn-rekord');
         const learnTeemaEl = document.getElementById('learn-teema'), sonaKaartEl = document.getElementById('sona-kaart');
+        const learnKysimusEl = document.getElementById('learn-kysimus');
         const variandidContainer = document.getElementById('variandid-container'), manguTagasiside = document.getElementById('mangu-tagasiside');
+        const b2SisendAla = document.getElementById('b2-sisend-ala'), b2ManguVastus = document.getElementById('b2-mangu-vastus');
+        const b2KontrolliNupp = document.getElementById('b2-kontrolli-nupp');
         const learnJargmine = document.getElementById('learn-jargmine'), learnUusMang = document.getElementById('learn-uus-mang');
         const lopetaMang = document.getElementById('lopeta-mang'), saavutusContainer = document.getElementById('saavutus-container');
         const manguAla = document.getElementById('mangu-ala'), tulemusVaade = document.getElementById('tulemus-vaade');
@@ -647,11 +704,17 @@
         const tulemusProtsent = document.getElementById('tulemus-protsent'), tulemusOigeid = document.getElementById('tulemus-oigeid');
         const tulemusKokku = document.getElementById('tulemus-kokku'), tulemusRekord = document.getElementById('tulemus-rekord');
         const uuestiMangima = document.getElementById('uuesti-mangima'), jataMeelde = document.getElementById('jata-meelde');
+        const learnTaseIndikaator = document.getElementById('learn-tase-indikaator');
+        const learnTaseNupud = document.querySelectorAll('.learn-tase-nupp');
         
         // ===== ABIFUNKTSIOONID =====
         function uuendaMustikaid() { const t = Math.min(Math.floor(oigeidJarjest/2), 5); mustikadEl.forEach((e,i)=> e.classList.toggle('taidetud', i<t)); }
         function uuendaSeeria() { seeriaNrEl.textContent = seeria; }
         function uuendaTaseNupud() { taseNupud.forEach(n => n.classList.toggle('aktiivne-tase', n.dataset.tase === aktiivneTase)); }
+        function uuendaLearnTaseNupud() {
+            learnTaseNupud.forEach(n => n.classList.toggle('aktiivne-learn-tase', n.dataset.learnTase === aktiivneLearnTase));
+            learnTaseIndikaator.textContent = aktiivneLearnTase;
+        }
         function muudaMaskotiEmotsioon(emotsioon) {
             maskottEl.className = 'maskott';
             if (emotsioon === 'roomus') maskottEl.classList.add('roomus');
@@ -659,10 +722,15 @@
             else if (emotsioon === 'vasinud') maskottEl.classList.add('vasinud');
             else if (emotsioon === 'lopetaja') maskottEl.classList.add('lopetaja');
             else if (emotsioon === 'voitja') maskottEl.classList.add('voitja');
-            
             setTimeout(() => maskottEl.className = 'maskott', 1000);
         }
-        function salvestaEdusammud() { localStorage.setItem('soomeTreenerPRO', JSON.stringify({sonad: sonad.map(s=>({id:s.id, raske:s.raske})), seeria, oigeidJarjest, tase: aktiivneTase})); }
+        function salvestaEdusammud() {
+            localStorage.setItem('soomeTreenerPRO', JSON.stringify({
+                sonad: sonad.map(s=>({id:s.id, raske:s.raske})),
+                seeria, oigeidJarjest, tase: aktiivneTase,
+                learnTase: aktiivneLearnTase
+            }));
+        }
         
         // ===== 100 SÕNA MÄNG =====
         function uuendaKorvi() {
@@ -683,11 +751,14 @@
             return saadaval[Math.floor(Math.random() * saadaval.length)];
         }
         
-        function genereeriVariandid(oigeSona) {
-            const variandid = [oigeSona.eesti];
+        function genereeriVariandid(oigeSona, keelSuund) {
+            // keelSuund: 'soome-eesti' (A1) või 'eesti-soome' (B1)
+            const oigeVastus = keelSuund === 'soome-eesti' ? oigeSona.eesti : oigeSona.soome;
+            const variandid = [oigeVastus];
             while (variandid.length < 4) {
-                const juhuslik = pohisonad[Math.floor(Math.random() * pohisonad.length)].eesti;
-                if (!variandid.includes(juhuslik)) variandid.push(juhuslik);
+                const juhuslik = pohisonad[Math.floor(Math.random() * pohisonad.length)];
+                const variant = keelSuund === 'soome-eesti' ? juhuslik.eesti : juhuslik.soome;
+                if (!variandid.includes(variant)) variandid.push(variant);
             }
             return variandid.sort(() => Math.random() - 0.5);
         }
@@ -695,72 +766,187 @@
         function naitaSonaMang() {
             hetkelSonaMang = valiJuhuslikSonaMang();
             if (!hetkelSonaMang) { lopetaMangFunc(); return; }
-            sonaKaartEl.textContent = hetkelSonaMang.soome.toUpperCase();
+            
             learnTeemaEl.textContent = hetkelSonaMang.teema;
-            const variandid = genereeriVariandid(hetkelSonaMang);
-            variandidContainer.innerHTML = '';
-            variandid.forEach(v => {
-                const btn = document.createElement('button');
-                btn.className = 'variant-nupp';
-                btn.textContent = v;
-                btn.addEventListener('click', () => kontrolliSonaVastus(v, btn));
-                variandidContainer.appendChild(btn);
-            });
-            vastatud = false; learnJargmine.style.display = 'none';
+            vastatud = false;
+            learnJargmine.style.display = 'none';
             manguTagasiside.className = 'tagasiside info';
-            manguTagasiside.innerHTML = '<span>👆 Vali õige tõlge!</span>';
             learnSeeriaEl.textContent = learnSeeria;
+            
+            // Peida kõik variandid ja B2 ala
+            variandidContainer.innerHTML = '';
+            variandidContainer.style.display = 'none';
+            b2SisendAla.classList.add('hidden');
+            sonaKaartEl.classList.remove('b2-sisend');
+            
+            if (aktiivneLearnTase === 'A1') {
+                // Soome → Eesti (valikvastused)
+                sonaKaartEl.textContent = hetkelSonaMang.soome.toUpperCase();
+                learnKysimusEl.textContent = 'Mida see tähendab?';
+                manguTagasiside.innerHTML = '<span>👆 Vali õige eesti tõlge!</span>';
+                const variandid = genereeriVariandid(hetkelSonaMang, 'soome-eesti');
+                variandidContainer.style.display = 'grid';
+                variandid.forEach(v => {
+                    const btn = document.createElement('button');
+                    btn.className = 'variant-nupp';
+                    btn.textContent = v;
+                    btn.addEventListener('click', () => kontrolliSonaVastusA1B1(v, btn, 'soome-eesti'));
+                    variandidContainer.appendChild(btn);
+                });
+            } else if (aktiivneLearnTase === 'B1') {
+                // Eesti → Soome (valikvastused)
+                sonaKaartEl.textContent = hetkelSonaMang.eesti.toUpperCase();
+                learnKysimusEl.textContent = 'Mis on soome keeles?';
+                manguTagasiside.innerHTML = '<span>👆 Vali õige soome tõlge!</span>';
+                const variandid = genereeriVariandid(hetkelSonaMang, 'eesti-soome');
+                variandidContainer.style.display = 'grid';
+                variandid.forEach(v => {
+                    const btn = document.createElement('button');
+                    btn.className = 'variant-nupp';
+                    btn.textContent = v;
+                    btn.addEventListener('click', () => kontrolliSonaVastusA1B1(v, btn, 'eesti-soome'));
+                    variandidContainer.appendChild(btn);
+                });
+            } else if (aktiivneLearnTase === 'B2') {
+                // Eesti → Soome (kirjuta ise)
+                sonaKaartEl.textContent = hetkelSonaMang.eesti.toUpperCase();
+                sonaKaartEl.classList.add('b2-sisend');
+                learnKysimusEl.textContent = 'Kirjuta soome keeles:';
+                manguTagasiside.innerHTML = '<span>✍️ Kirjuta soome sõna ja vajuta Enter või Kontrolli!</span>';
+                b2SisendAla.classList.remove('hidden');
+                b2ManguVastus.value = '';
+                b2ManguVastus.focus();
+            }
         }
         
-        function kontrolliSonaVastus(valitud, btn) {
-            if (vastatud) return; vastatud = true; manguKokku++;
-            const onOige = valitud === hetkelSonaMang.eesti;
+        function kontrolliSonaVastusA1B1(valitud, btn, keelSuund) {
+            if (vastatud) return;
+            vastatud = true;
+            manguKokku++;
+            
+            const oigeVastus = keelSuund === 'soome-eesti' ? hetkelSonaMang.eesti : hetkelSonaMang.soome;
+            const onOige = valitud.toLowerCase() === oigeVastus.toLowerCase();
             const nupud = document.querySelectorAll('.variant-nupp');
+            
             if (onOige) {
-                btn.classList.add('oige'); manguTagasiside.className = 'tagasiside oige';
+                btn.classList.add('oige');
+                manguTagasiside.className = 'tagasiside oige';
                 manguTagasiside.innerHTML = `<span>✅ Õige! ${hetkelSonaMang.soome} = ${hetkelSonaMang.eesti}</span>`;
-                muudaMaskotiEmotsioon('roomus'); manguOigeid++; learnSeeria++;
+                muudaMaskotiEmotsioon('roomus');
+                manguOigeid++;
+                learnSeeria++;
                 learnSeeriaEl.textContent = learnSeeria;
-                if (learnSeeria > learnRekord) { learnRekord = learnSeeria; localStorage.setItem('learnRekord', learnRekord); learnRekordEl.textContent = learnRekord; }
-                const indeks = pohisonad.findIndex(s => s.soome === hetkelSonaMang.soome);
-                if (!opitudSonad.includes(indeks)) { opitudSonad.push(indeks); localStorage.setItem('opitudSonad', JSON.stringify(opitudSonad)); uuendaKorvi(); }
-                const opitud = opitudSonad.length;
-                if (opitud === 10) { saavutusContainer.innerHTML = '<div class="saavutus-teade">🌱 Algaja! 10 sõna selge!</div>'; muudaMaskotiEmotsioon('lopetaja'); }
-                else if (opitud === 50) { saavutusContainer.innerHTML = '<div class="saavutus-teade">🌿 Pool maas! 50 sõna selge!</div>'; muudaMaskotiEmotsioon('lopetaja'); }
-                else if (opitud === 100) { 
-                    saavutusContainer.innerHTML = '<div class="saavutus-teade">🌳 MEISTER! Kõik 100 sõna selge! 🎉</div>'; 
-                    muudaMaskotiEmotsioon('voitja'); laseKonfetti();
-                    saadaGA('100_sona_valmis', { event_category: 'saavutus' });
+                if (learnSeeria > learnRekord) {
+                    learnRekord = learnSeeria;
+                    localStorage.setItem('learnRekord', learnRekord);
+                    learnRekordEl.textContent = learnRekord;
                 }
-                setTimeout(() => { if (opitudSonad.length < 100) saavutusContainer.innerHTML = ''; }, 3000);
-                learnJargmine.style.display = 'block';
+                maargiOpetuks();
             } else {
-                btn.classList.add('vale'); nupud.forEach(n => { if (n.textContent === hetkelSonaMang.eesti) n.classList.add('oige'); });
-                manguTagasiside.className = 'tagasiside vale'; manguTagasiside.innerHTML = `<span>❌ Vale! Õige vastus on: ${hetkelSonaMang.eesti}</span>`;
-                muudaMaskotiEmotsioon('kurb'); learnSeeria = 0; learnSeeriaEl.textContent = learnSeeria;
-                learnJargmine.style.display = 'block';
+                btn.classList.add('vale');
+                nupud.forEach(n => {
+                    if (n.textContent.toLowerCase() === oigeVastus.toLowerCase()) n.classList.add('oige');
+                });
+                manguTagasiside.className = 'tagasiside vale';
+                manguTagasiside.innerHTML = `<span>❌ Vale! Õige: ${hetkelSonaMang.soome} = ${hetkelSonaMang.eesti}</span>`;
+                muudaMaskotiEmotsioon('kurb');
+                learnSeeria = 0;
+                learnSeeriaEl.textContent = learnSeeria;
             }
             nupud.forEach(n => n.disabled = true);
+            learnJargmine.style.display = 'block';
             if (opitudSonad.length === 100) setTimeout(() => lopetaMangFunc(), 1000);
         }
         
+        function kontrolliB2Vastust() {
+            if (vastatud) return;
+            const vastus = b2ManguVastus.value.trim().toLowerCase();
+            if (!vastus) return;
+            
+            vastatud = true;
+            manguKokku++;
+            const onOige = vastus === hetkelSonaMang.soome.toLowerCase();
+            
+            if (onOige) {
+                manguTagasiside.className = 'tagasiside oige';
+                manguTagasiside.innerHTML = `<span>✅ Õige! ${hetkelSonaMang.soome} = ${hetkelSonaMang.eesti}</span>`;
+                muudaMaskotiEmotsioon('roomus');
+                manguOigeid++;
+                learnSeeria++;
+                learnSeeriaEl.textContent = learnSeeria;
+                if (learnSeeria > learnRekord) {
+                    learnRekord = learnSeeria;
+                    localStorage.setItem('learnRekord', learnRekord);
+                    learnRekordEl.textContent = learnRekord;
+                }
+                maargiOpetuks();
+            } else {
+                manguTagasiside.className = 'tagasiside vale';
+                manguTagasiside.innerHTML = `<span>❌ Vale! Õige: ${hetkelSonaMang.soome} = ${hetkelSonaMang.eesti}</span>`;
+                muudaMaskotiEmotsioon('kurb');
+                learnSeeria = 0;
+                learnSeeriaEl.textContent = learnSeeria;
+            }
+            b2ManguVastus.disabled = true;
+            learnJargmine.style.display = 'block';
+            if (opitudSonad.length === 100) setTimeout(() => lopetaMangFunc(), 1000);
+        }
+        
+        function maargiOpetuks() {
+            const indeks = pohisonad.findIndex(s => s.soome === hetkelSonaMang.soome);
+            if (!opitudSonad.includes(indeks)) {
+                opitudSonad.push(indeks);
+                localStorage.setItem('opitudSonad', JSON.stringify(opitudSonad));
+                uuendaKorvi();
+            }
+            const opitud = opitudSonad.length;
+            if (opitud === 10) {
+                saavutusContainer.innerHTML = '<div class="saavutus-teade">🌱 Algaja! 10 sõna selge!</div>';
+                muudaMaskotiEmotsioon('lopetaja');
+            } else if (opitud === 50) {
+                saavutusContainer.innerHTML = '<div class="saavutus-teade">🌿 Pool maas! 50 sõna selge!</div>';
+                muudaMaskotiEmotsioon('lopetaja');
+            } else if (opitud === 100) {
+                saavutusContainer.innerHTML = '<div class="saavutus-teade">🌳 MEISTER! Kõik 100 sõna selge! 🎉</div>';
+                muudaMaskotiEmotsioon('voitja');
+                laseKonfetti();
+                saadaGA('100_sona_valmis', { event_category: 'saavutus', event_label: aktiivneLearnTase });
+            }
+            setTimeout(() => { if (opitudSonad.length < 100) saavutusContainer.innerHTML = ''; }, 3000);
+        }
+        
         function lopetaMangFunc() {
-            manguAla.style.display = 'none'; manguNupud.style.display = 'none'; tulemusVaade.style.display = 'block';
+            manguAla.style.display = 'none';
+            manguNupud.style.display = 'none';
+            tulemusVaade.style.display = 'block';
             const protsent = manguKokku > 0 ? Math.round((manguOigeid / manguKokku) * 100) : 0;
-            tulemusProtsent.textContent = protsent + '%'; tulemusOigeid.textContent = manguOigeid;
-            tulemusKokku.textContent = manguKokku; tulemusRekord.textContent = learnRekord;
+            tulemusProtsent.textContent = protsent + '%';
+            tulemusOigeid.textContent = manguOigeid;
+            tulemusKokku.textContent = manguKokku;
+            tulemusRekord.textContent = learnRekord;
+            saadaGA('100_sona_mang_labi', { event_category: 'mang', event_label: aktiivneLearnTase, value: protsent });
         }
         
         function alustaUutMangu() {
-            opitudSonad = []; localStorage.setItem('opitudSonad', '[]');
-            learnSeeria = 0; manguOigeid = 0; manguKokku = 0; manguAlustatud = true;
-            uuendaKorvi(); learnSeeriaEl.textContent = '0';
-            manguAla.style.display = 'block'; manguNupud.style.display = 'flex'; tulemusVaade.style.display = 'none';
-            saavutusContainer.innerHTML = ''; naitaSonaMang();
+            opitudSonad = [];
+            localStorage.setItem('opitudSonad', '[]');
+            learnSeeria = 0;
+            manguOigeid = 0;
+            manguKokku = 0;
+            manguAlustatud = true;
+            uuendaKorvi();
+            learnSeeriaEl.textContent = '0';
+            manguAla.style.display = 'block';
+            manguNupud.style.display = 'flex';
+            tulemusVaade.style.display = 'none';
+            saavutusContainer.innerHTML = '';
+            naitaSonaMang();
         }
         
         // ===== HARJUTA FUNKTSIOONID =====
-        function filtreeriLausedTasemeJargi(tase) { return laused.filter(l => tase === "A2" ? l.tase === "A2" : (tase === "B1" ? l.tase !== "B2" : true)); }
+        function filtreeriLausedTasemeJargi(tase) {
+            return laused.filter(l => tase === "A2" ? l.tase === "A2" : (tase === "B1" ? l.tase !== "B2" : true));
+        }
         
         function valiJuhuslikLause() {
             let saadavalSonad = harjutaRaskeidAinult ? sonad.filter(s=>s.raske) : [...sonad];
@@ -778,45 +964,82 @@
             lipuNupp.style.opacity = hetkelSona.raske ? '1' : '0.5';
         }
         
-        function uusLause() { valiJuhuslikLause(); vastusInput.value = ''; vastusInput.disabled = false; vastusInput.focus(); kontrolliNupp.style.display='block'; jargmineNupp.style.display='none'; tagasisideKast.className='tagasiside info'; tagasisideIkoon.textContent='📝'; tagasisideTekst.textContent = aktiivneReziim === 'maraton' ? `🔥 MARATON (${aktiivneTase}): ${seeria} õiget!` : `Kirjuta õige käändevorm (${aktiivneTase}).`; katsed = 0; katseteLuger.textContent = ''; reegeliNupp.classList.add('hidden'); }
+        function uusLause() {
+            valiJuhuslikLause();
+            vastusInput.value = '';
+            vastusInput.disabled = false;
+            vastusInput.focus();
+            kontrolliNupp.style.display='block';
+            jargmineNupp.style.display='none';
+            tagasisideKast.className='tagasiside info';
+            tagasisideIkoon.textContent='📝';
+            tagasisideTekst.textContent = aktiivneReziim === 'maraton'
+                ? `🔥 MARATON (${aktiivneTase}): ${seeria} õiget!`
+                : `Kirjuta õige käändevorm (${aktiivneTase}).`;
+            katsed = 0;
+            katseteLuger.textContent = '';
+            reegeliNupp.classList.add('hidden');
+        }
         
         function kontrolliVastust() {
             let v = vastusInput.value.trim().toLowerCase().replace(/[.,!?]+$/, '');
             const onOige = v === hetkelOigeVastus.toLowerCase();
-            if (onOige) { 
-                seeria++; oigeidJarjest++; uuendaSeeria(); uuendaMustikaid(); muudaMaskotiEmotsioon('roomus'); 
-                tagasisideKast.className='tagasiside oige'; tagasisideIkoon.textContent='✅'; 
-                if (aktiivneReziim === 'maraton') { 
-                    tagasisideTekst.textContent = `🔥 Oikein! Seeria: ${seeria}`; uusLause(); 
-                } else { 
-                    tagasisideTekst.textContent = `Oikein! ${hetkelOigeVastus}`; vastusInput.disabled = true; kontrolliNupp.style.display='none'; jargmineNupp.style.display='block'; 
-                } 
-                reegeliNupp.classList.add('hidden'); katseteLuger.textContent = ''; 
-            } else { 
-                katsed++; muudaMaskotiEmotsioon('kurb'); tagasisideKast.className='tagasiside vale'; tagasisideIkoon.textContent='❌'; 
-                if (aktiivneReziim === 'maraton') { 
-                    tagasisideTekst.textContent = `💔 Maraton läbi! Seeria: ${seeria}. Õige: ${hetkelOigeVastus}`; 
-                    if (seeria > maratoniRekord) { 
-                        maratoniRekord = seeria; localStorage.setItem('maratonRekord', maratoniRekord); 
-                        tagasisideTekst.textContent += ` 🏆 UUS REKORD!`; laseKonfetti(); muudaMaskotiEmotsioon('voitja');
+            if (onOige) {
+                seeria++; oigeidJarjest++; uuendaSeeria(); uuendaMustikaid(); muudaMaskotiEmotsioon('roomus');
+                tagasisideKast.className='tagasiside oige'; tagasisideIkoon.textContent='✅';
+                if (aktiivneReziim === 'maraton') {
+                    tagasisideTekst.textContent = `🔥 Oikein! Seeria: ${seeria}`;
+                    uusLause();
+                } else {
+                    tagasisideTekst.textContent = `Oikein! ${hetkelOigeVastus}`;
+                    vastusInput.disabled = true;
+                    kontrolliNupp.style.display='none';
+                    jargmineNupp.style.display='block';
+                }
+                reegeliNupp.classList.add('hidden');
+                katseteLuger.textContent = '';
+            } else {
+                katsed++;
+                muudaMaskotiEmotsioon('kurb');
+                tagasisideKast.className='tagasiside vale';
+                tagasisideIkoon.textContent='❌';
+                if (aktiivneReziim === 'maraton') {
+                    tagasisideTekst.textContent = `💔 Maraton läbi! Seeria: ${seeria}. Õige: ${hetkelOigeVastus}`;
+                    if (seeria > maratoniRekord) {
+                        maratoniRekord = seeria;
+                        localStorage.setItem('maratonRekord', maratoniRekord);
+                        tagasisideTekst.textContent += ` 🏆 UUS REKORD!`;
+                        laseKonfetti();
+                        muudaMaskotiEmotsioon('voitja');
                         saadaGA('maraton_record', { event_category: 'saavutus', value: maratoniRekord });
-                    } 
-                    vastusInput.disabled = true; kontrolliNupp.style.display='none'; jargmineNupp.style.display='block'; 
-                    seeria = 0; oigeidJarjest = 0; uuendaSeeria(); uuendaMustikaid(); 
-                } else { 
-                    if (katsed >= 3) { 
-                        tagasisideTekst.textContent = `Väärin. Oikea: ${hetkelOigeVastus}`; vastusInput.disabled = true; kontrolliNupp.style.display='none'; jargmineNupp.style.display='block'; 
-                        if(aktiivneReziim!=='test') { seeria=0; oigeidJarjest=0; uuendaSeeria(); uuendaMustikaid(); } 
-                    } else { 
-                        tagasisideTekst.textContent = `Väärin. Yritä uudelleen!`; katseteLuger.textContent = `${katsed}/3 yritystä`; 
-                        reegeliNupp.classList.remove('hidden'); vastusInput.value = ''; vastusInput.focus(); 
-                    } 
-                } 
+                    }
+                    vastusInput.disabled = true;
+                    kontrolliNupp.style.display='none';
+                    jargmineNupp.style.display='block';
+                    seeria = 0;
+                    oigeidJarjest = 0;
+                    uuendaSeeria();
+                    uuendaMustikaid();
+                } else {
+                    if (katsed >= 3) {
+                        tagasisideTekst.textContent = `Väärin. Oikea: ${hetkelOigeVastus}`;
+                        vastusInput.disabled = true;
+                        kontrolliNupp.style.display='none';
+                        jargmineNupp.style.display='block';
+                        if(aktiivneReziim!=='test') { seeria=0; oigeidJarjest=0; uuendaSeeria(); uuendaMustikaid(); }
+                    } else {
+                        tagasisideTekst.textContent = `Väärin. Yritä uudelleen!`;
+                        katseteLuger.textContent = `${katsed}/3 yritystä`;
+                        reegeliNupp.classList.remove('hidden');
+                        vastusInput.value = '';
+                        vastusInput.focus();
+                    }
+                }
             }
             salvestaEdusammud();
         }
         
-        // ===== TESTI FUNKTSIOONID (PARANDATUD!) =====
+        // ===== TESTI FUNKTSIOONID =====
         function alustaTesti() {
             testKysimused = []; testIndeks = 0; testOiged = 0; testValedSonad = [];
             const testiLaused = filtreeriLausedTasemeJargi(aktiivneTase);
@@ -827,7 +1050,8 @@
                 while (!sona.vormid[lause.kaane] && katseid < 50) { sona = sonad[Math.floor(Math.random() * sonad.length)]; katseid++; }
                 testKysimused.push({ sona, lause, vastus: sona.vormid[lause.kaane] });
             }
-            naitaTestiKysimust(); testModal.style.display = 'flex';
+            naitaTestiKysimust();
+            testModal.style.display = 'flex';
         }
         
         function naitaTestiKysimust() {
@@ -837,14 +1061,16 @@
                 <div class="test-progress">Küsimus ${testIndeks + 1} / 15 (Tase: ${aktiivneTase})</div>
                 <div class="test-kysimus">${k.lause.mall.replace('{0}', '_____')}</div>
                 <div class="vihje">(${k.sona.tolge} - ${k.sona.tyvi}) [${kaandeNimed[k.lause.kaane]}]</div>
-                <div class="input-group" style="margin-top:20px"><input type="text" class="vastus-input" id="test-vastus" placeholder="Vastus..." autofocus><button class="btn" id="test-vasta">Vasta</button></div>
+                <div class="input-group" style="margin-top:20px">
+                    <input type="text" class="vastus-input" id="test-vastus" placeholder="Vastus..." autofocus>
+                    <button class="btn" id="test-vasta">Vasta</button>
+                </div>
                 <div id="test-tagasiside" class="tagasiside info" style="margin-top:15px"></div>
             `;
             document.getElementById('test-vasta').addEventListener('click', () => {
                 const vastus = document.getElementById('test-vastus').value.trim().toLowerCase();
                 const oige = testKysimused[testIndeks].vastus;
                 const tagasiside = document.getElementById('test-tagasiside');
-                // PARANDATUD RIDA – mõlemad pooled väiketähtedeks
                 if (vastus === oige.toLowerCase()) {
                     testOiged++;
                     tagasiside.className = 'tagasiside oige';
@@ -857,72 +1083,215 @@
                 testIndeks++;
                 setTimeout(() => naitaTestiKysimust(), 700);
             });
-            document.getElementById('test-vastus').addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('test-vasta').click(); });
+            document.getElementById('test-vastus').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') document.getElementById('test-vasta').click();
+            });
         }
         
         function lopetaTest() {
-            testModal.style.display = 'none'; const protsent = Math.round((testOiged / 15) * 100);
+            testModal.style.display = 'none';
+            const protsent = Math.round((testOiged / 15) * 100);
             let soovitatavTase = protsent >= 80 ? 'B2' : (protsent >= 60 ? 'B1' : 'A2');
-            testValedSonad.forEach(id => { const sona = sonad.find(s => s.id === id); if (sona) sona.raske = true; });
+            testValedSonad.forEach(id => {
+                const sona = sonad.find(s => s.id === id);
+                if (sona) sona.raske = true;
+            });
             salvestaEdusammud();
-            
             saadaGA('test_completed', { event_category: 'test', event_label: aktiivneTase, value: protsent });
-            
             if (protsent === 100) { laseKonfetti(); muudaMaskotiEmotsioon('voitja'); }
             
             alert(`TEST LÄBI!\n\nTulemus: ${testOiged}/15 (${protsent}%)\nTesti tase: ${aktiivneTase}\nSoovitatav tase: ${soovitatavTase}\n\n${testValedSonad.length} sõna märgitud raskeks.`);
-            aktiivneReziim = 'harjuta'; reziimNupud.forEach(n => n.classList.remove('aktiivne'));
-            document.querySelector(`.reziim-nupp[data-reziim="harjuta"]`).classList.add('aktiivne'); 
-            treenerVaade.style.display = 'block'; learnVaade.style.display = 'none'; taseValik.style.display = 'flex';
+            aktiivneReziim = 'harjuta';
+            reziimNupud.forEach(n => n.classList.remove('aktiivne'));
+            document.querySelector(`.reziim-nupp[data-reziim="harjuta"]`).classList.add('aktiivne');
+            treenerVaade.style.display = 'block';
+            learnVaade.style.display = 'none';
+            taseValik.style.display = 'flex';
+            learnTaseValik.style.display = 'none';
             uusLause();
         }
         
         // ===== REŽIIMI VAHETAMINE =====
         function vahetaReziim(reziim) {
-            aktiivneReziim = reziim; reziimNupud.forEach(n => n.classList.remove('aktiivne'));
+            aktiivneReziim = reziim;
+            reziimNupud.forEach(n => n.classList.remove('aktiivne'));
             document.querySelector(`.reziim-nupp[data-reziim="${reziim}"]`).classList.add('aktiivne');
             saadaGA('reziim_valitud', { event_category: 'reziim', event_label: reziim });
             
             if (reziim === 'learn') {
-                treenerVaade.style.display = 'none'; learnVaade.style.display = 'block'; taseValik.style.display = 'none';
-                uuendaKorvi(); if (!manguAlustatud) { alustaUutMangu(); } 
-                else if (opitudSonad.length < 100) { manguAla.style.display = 'block'; manguNupud.style.display = 'flex'; tulemusVaade.style.display = 'none'; naitaSonaMang(); }
+                treenerVaade.style.display = 'none';
+                learnVaade.style.display = 'block';
+                taseValik.style.display = 'none';
+                learnTaseValik.style.display = 'flex';
+                uuendaKorvi();
+                uuendaLearnTaseNupud();
+                if (!manguAlustatud) {
+                    alustaUutMangu();
+                } else if (opitudSonad.length < 100) {
+                    manguAla.style.display = 'block';
+                    manguNupud.style.display = 'flex';
+                    tulemusVaade.style.display = 'none';
+                    naitaSonaMang();
+                }
             } else {
-                treenerVaade.style.display = 'block'; learnVaade.style.display = 'none'; taseValik.style.display = 'flex';
-                if (reziim === 'test') { alustaTesti(); } 
-                else if (reziim === 'maraton') { seeria = 0; oigeidJarjest = 0; uuendaSeeria(); uuendaMustikaid(); tagasisideTekst.textContent = `🔥 MARATON (${aktiivneTase})! Rekord: ${maratoniRekord}`; uusLause(); } 
-                else { uusLause(); }
+                treenerVaade.style.display = 'block';
+                learnVaade.style.display = 'none';
+                taseValik.style.display = 'flex';
+                learnTaseValik.style.display = 'none';
+                if (reziim === 'test') {
+                    alustaTesti();
+                } else if (reziim === 'maraton') {
+                    seeria = 0; oigeidJarjest = 0; uuendaSeeria(); uuendaMustikaid();
+                    tagasisideTekst.textContent = `🔥 MARATON (${aktiivneTase})! Rekord: ${maratoniRekord}`;
+                    uusLause();
+                } else {
+                    uusLause();
+                }
             }
+        }
+        
+        // ===== 100 SÕNA MÄNGU TASEME VAHETAMINE =====
+        function vahetaLearnTase(tase) {
+            aktiivneLearnTase = tase;
+            uuendaLearnTaseNupud();
+            salvestaEdusammud();
+            saadaGA('learn_tase_valitud', { event_category: 'learn', event_label: tase });
+            // Nulli mängu edusammud taseme vahetamisel
+            opitudSonad = [];
+            localStorage.setItem('opitudSonad', '[]');
+            learnSeeria = 0;
+            manguOigeid = 0;
+            manguKokku = 0;
+            uuendaKorvi();
+            learnSeeriaEl.textContent = '0';
+            manguAla.style.display = 'block';
+            manguNupud.style.display = 'flex';
+            tulemusVaade.style.display = 'none';
+            saavutusContainer.innerHTML = '';
+            naitaSonaMang();
         }
         
         // ===== KÄIVITAMINE =====
         function init() {
-            uuendaTaseNupud(); uuendaKorvi(); learnRekordEl.textContent = learnRekord;
+            // Taasta salvestatud learn tase
+            const salvestatud = JSON.parse(localStorage.getItem('soomeTreenerPRO') || '{}');
+            if (salvestatud.learnTase) aktiivneLearnTase = salvestatud.learnTase;
+            
+            uuendaTaseNupud();
+            uuendaLearnTaseNupud();
+            uuendaKorvi();
+            learnRekordEl.textContent = learnRekord;
             faktiTekst.textContent = faktid[Math.floor(Math.random()*faktid.length)];
             valiJuhuslikLause();
             saadaRaskusaste(aktiivneTase);
             
+            // Harjuta/test/maraton sündmused
             kontrolliNupp.addEventListener('click', kontrolliVastust);
             jargmineNupp.addEventListener('click', uusLause);
             uusLauseNupp.addEventListener('click', uusLause);
-            reegeliNupp.addEventListener('click', ()=> { if(hetkelLause) { tagasisideTekst.textContent = `📖 ${hetkelLause.reegel}`; tagasisideKast.className='tagasiside info'; } });
-            lipuNupp.addEventListener('click', ()=> { if(hetkelSona) { hetkelSona.raske = !hetkelSona.raske; lipuNupp.style.opacity = hetkelSona.raske?'1':'0.5'; salvestaEdusammud(); } });
-            raskeidNupp.addEventListener('click', ()=> { harjutaRaskeidAinult = !harjutaRaskeidAinult; raskeidNupp.textContent = harjutaRaskeidAinult?'🎯 Kaikki':'🎯 Raskeid'; uusLause(); });
-            eksportNupp.addEventListener('click', ()=> { const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify({sonad:sonad.map(s=>({id:s.id,tyvi:s.tyvi,raske:s.raske})),seeria,oigeidJarjest,tase:aktiivneTase,opitudSonad})],{type:'application/json'})); a.download='soome_pro_edusammud.json'; a.click(); });
-            importNupp.addEventListener('click', ()=> importFail.click());
-            importFail.addEventListener('change', (e)=> { const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); d.sonad.forEach(s=>{ const x=sonad.find(y=>y.id===s.id); if(x)x.raske=s.raske; }); seeria=d.seeria||0; oigeidJarjest=d.oigeidJarjest||0; if(d.tase) { aktiivneTase=d.tase; uuendaTaseNupud(); } if(d.opitudSonad) { opitudSonad = d.opitudSonad; localStorage.setItem('opitudSonad', JSON.stringify(opitudSonad)); uuendaKorvi(); } uuendaSeeria(); uuendaMustikaid(); salvestaEdusammud(); uusLause(); }catch(e){alert('Vigane fail');} }; r.readAsText(f); importFail.value=''; });
-            vastusInput.addEventListener('keypress', e=> { if(e.key==='Enter' && !vastusInput.disabled) kontrolliVastust(); });
+            reegeliNupp.addEventListener('click', () => {
+                if(hetkelLause) {
+                    tagasisideTekst.textContent = `📖 ${hetkelLause.reegel}`;
+                    tagasisideKast.className='tagasiside info';
+                }
+            });
+            lipuNupp.addEventListener('click', () => {
+                if(hetkelSona) {
+                    hetkelSona.raske = !hetkelSona.raske;
+                    lipuNupp.style.opacity = hetkelSona.raske?'1':'0.5';
+                    salvestaEdusammud();
+                }
+            });
+            raskeidNupp.addEventListener('click', () => {
+                harjutaRaskeidAinult = !harjutaRaskeidAinult;
+                raskeidNupp.textContent = harjutaRaskeidAinult ? '🎯 Kaikki' : '🎯 Raskeid';
+                uusLause();
+            });
+            eksportNupp.addEventListener('click', () => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([JSON.stringify({
+                    sonad: sonad.map(s=>({id:s.id, tyvi:s.tyvi, raske:s.raske})),
+                    seeria, oigeidJarjest, tase: aktiivneTase,
+                    opitudSonad, learnTase: aktiivneLearnTase
+                })], {type:'application/json'}));
+                a.download = 'soome_pro_edusammud.json';
+                a.click();
+            });
+            importNupp.addEventListener('click', () => importFail.click());
+            importFail.addEventListener('change', (e) => {
+                const f = e.target.files[0];
+                if(!f) return;
+                const r = new FileReader();
+                r.onload = e => {
+                    try {
+                        const d = JSON.parse(e.target.result);
+                        d.sonad.forEach(s => {
+                            const x = sonad.find(y => y.id === s.id);
+                            if(x) x.raske = s.raske;
+                        });
+                        seeria = d.seeria || 0;
+                        oigeidJarjest = d.oigeidJarjest || 0;
+                        if(d.tase) { aktiivneTase = d.tase; uuendaTaseNupud(); }
+                        if(d.opitudSonad) {
+                            opitudSonad = d.opitudSonad;
+                            localStorage.setItem('opitudSonad', JSON.stringify(opitudSonad));
+                            uuendaKorvi();
+                        }
+                        if(d.learnTase) {
+                            aktiivneLearnTase = d.learnTase;
+                            uuendaLearnTaseNupud();
+                        }
+                        uuendaSeeria();
+                        uuendaMustikaid();
+                        salvestaEdusammud();
+                        uusLause();
+                    } catch(e) { alert('Vigane fail'); }
+                };
+                r.readAsText(f);
+                importFail.value='';
+            });
+            vastusInput.addEventListener('keypress', e => {
+                if(e.key==='Enter' && !vastusInput.disabled) kontrolliVastust();
+            });
             reziimNupud.forEach(n => n.addEventListener('click', () => vahetaReziim(n.dataset.reziim)));
-            taseNupud.forEach(n => n.addEventListener('click', () => { aktiivneTase = n.dataset.tase; uuendaTaseNupud(); saadaRaskusaste(aktiivneTase); if(aktiivneReziim!=='learn') uusLause(); salvestaEdusammud(); }));
-            testClose.addEventListener('click', () => { testModal.style.display = 'none'; aktiivneReziim = 'harjuta'; reziimNupud.forEach(n => n.classList.remove('aktiivne')); document.querySelector(`.reziim-nupp[data-reziim="harjuta"]`).classList.add('aktiivne'); });
+            taseNupud.forEach(n => n.addEventListener('click', () => {
+                aktiivneTase = n.dataset.tase;
+                uuendaTaseNupud();
+                saadaRaskusaste(aktiivneTase);
+                if(aktiivneReziim!=='learn') uusLause();
+                salvestaEdusammud();
+            }));
             
+            // 100 sõna mängu taseme nupud
+            learnTaseNupud.forEach(n => n.addEventListener('click', () => vahetaLearnTase(n.dataset.learnTase)));
+            
+            // B2 kirjutamise sündmused
+            b2KontrolliNupp.addEventListener('click', kontrolliB2Vastust);
+            b2ManguVastus.addEventListener('keypress', e => {
+                if(e.key === 'Enter' && !vastatud) kontrolliB2Vastust();
+            });
+            
+            testClose.addEventListener('click', () => {
+                testModal.style.display = 'none';
+                aktiivneReziim = 'harjuta';
+                reziimNupud.forEach(n => n.classList.remove('aktiivne'));
+                document.querySelector(`.reziim-nupp[data-reziim="harjuta"]`).classList.add('aktiivne');
+                treenerVaade.style.display = 'block';
+                learnVaade.style.display = 'none';
+                taseValik.style.display = 'flex';
+                learnTaseValik.style.display = 'none';
+            });
+            
+            // 100 sõna mängu üldnupud
             learnJargmine.addEventListener('click', naitaSonaMang);
-            learnUusMang.addEventListener('click', ()=> { if(confirm('Alustada uut mängu? Kõik edusammud nullitakse.')) alustaUutMangu(); });
+            learnUusMang.addEventListener('click', () => {
+                if(confirm('Alustada uut mängu? Kõik edusammud nullitakse.')) alustaUutMangu();
+            });
             lopetaMang.addEventListener('click', lopetaMangFunc);
             uuestiMangima.addEventListener('click', alustaUutMangu);
-            jataMeelde.addEventListener('click', ()=> { vahetaReziim('harjuta'); });
+            jataMeelde.addEventListener('click', () => { vahetaReziim('harjuta'); });
             
-            maskottEl.addEventListener('click', ()=> { muudaMaskotiEmotsioon('roomus'); });
+            maskottEl.addEventListener('click', () => { muudaMaskotiEmotsioon('roomus'); });
         }
         
         init();
