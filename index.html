@@ -81,15 +81,6 @@
         .header-text h1 span { background: var(--accent-blue); color: white; padding: 2px 10px; border-radius: 30px; font-size: 14px; margin-left: 8px; }
         .header-text p { color: var(--text-light); font-size: 13px; }
         
-        .top-right-controls { display: flex; gap: 8px; margin-left: auto; align-items: center; }
-        .heli-nupp {
-            background: white; border: 1px solid var(--accent-blue); border-radius: 40px;
-            padding: 8px 12px; font-size: 18px; cursor: pointer; transition: all 0.2s;
-            color: var(--accent-blue);
-        }
-        .heli-nupp:hover { background: var(--accent-blue); color: white; }
-        .heli-nupp.aktiivne { background: var(--accent-blue); color: white; }
-        
         .reziimi-valik { display: flex; gap: 6px; flex-wrap: wrap; }
         .reziim-nupp {
             padding: 8px 12px; font-size: 13px; font-family: var(--font-heading); font-weight: 700;
@@ -286,7 +277,6 @@
         @media (max-width: 700px) {
             .app-container { padding: 16px; }
             .header { flex-wrap: wrap; }
-            .top-right-controls { margin-left: 0; }
             .reziimi-valik { width: 100%; justify-content: center; margin-top: 10px; }
             .lause { font-size: 22px; }
             .input-group { flex-direction: column; }
@@ -307,11 +297,6 @@
 </head>
 <body>
 
-<!-- Taustaheli (peidetud, kuni kasutaja aktiveerib) -->
-<audio id="taustaheli" loop preload="none">
-    <source src="data:audio/wav;base64,UklGRlwAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACAgICAf39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f38=" type="audio/wav">
-</audio>
-
 <div class="app-container">
     
     <div class="header">
@@ -319,9 +304,6 @@
         <div class="header-text">
             <h1>Soome Keele Treener <span>PRO</span></h1>
             <p>🇫🇮 100 sõna • 50+ käänet • YKI B2 • Perekond Ojaküla 🇫🇮</p>
-        </div>
-        <div class="top-right-controls">
-            <button class="heli-nupp" id="heli-nupp" title="Lülita loodusheli sisse/välja">🔇</button>
         </div>
         <div class="reziimi-valik">
             <button class="reziim-nupp learn" data-reziim="learn"><span>🌱</span><span>100 SÕNA</span></button>
@@ -473,50 +455,6 @@
             confetti({ particleCount: 100, spread: 100, origin: { y: 0.5, x: 0.3 }, colors: ['#2E5A88', '#FFFFFF', '#4A8BB5'] });
             confetti({ particleCount: 100, spread: 100, origin: { y: 0.5, x: 0.7 }, colors: ['#2E5A88', '#FFFFFF', '#4A8BB5'] });
         }
-        
-        // ===== HELI FUNKTSIOONID =====
-        const heliNupp = document.getElementById('heli-nupp');
-        let heliAktiivne = false;
-        let audioContext = null;
-        let heliAllikas = null;
-        
-        function initHeli() {
-            if (audioContext) return;
-            try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator1 = audioContext.createOscillator();
-                const oscillator2 = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                oscillator1.type = 'sine';
-                oscillator1.frequency.value = 880;
-                oscillator2.type = 'sine';
-                oscillator2.frequency.value = 440;
-                gainNode.gain.value = 0.03;
-                oscillator1.connect(gainNode);
-                oscillator2.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                oscillator1.start();
-                oscillator2.start();
-                heliAllikas = { oscillator1, oscillator2, gainNode };
-            } catch(e) { console.log('Heli ei toetata'); }
-        }
-        
-        heliNupp.addEventListener('click', () => {
-            if (!heliAktiivne) {
-                initHeli();
-                heliNupp.textContent = '🔊';
-                heliNupp.classList.add('aktiivne');
-                if (audioContext && audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
-                heliAktiivne = true;
-            } else {
-                if (audioContext) audioContext.suspend();
-                heliNupp.textContent = '🔇';
-                heliNupp.classList.remove('aktiivne');
-                heliAktiivne = false;
-            }
-        });
         
         // ===== GOOGLE ANALYTICS SÜNDMUSED =====
         function saadaGA(syndmus, parameetrid = {}) {
@@ -752,7 +690,6 @@
         }
         
         function genereeriVariandid(oigeSona, keelSuund) {
-            // keelSuund: 'soome-eesti' (A1) või 'eesti-soome' (B1)
             const oigeVastus = keelSuund === 'soome-eesti' ? oigeSona.eesti : oigeSona.soome;
             const variandid = [oigeVastus];
             while (variandid.length < 4) {
@@ -773,14 +710,12 @@
             manguTagasiside.className = 'tagasiside info';
             learnSeeriaEl.textContent = learnSeeria;
             
-            // Peida kõik variandid ja B2 ala
             variandidContainer.innerHTML = '';
             variandidContainer.style.display = 'none';
             b2SisendAla.classList.add('hidden');
             sonaKaartEl.classList.remove('b2-sisend');
             
             if (aktiivneLearnTase === 'A1') {
-                // Soome → Eesti (valikvastused)
                 sonaKaartEl.textContent = hetkelSonaMang.soome.toUpperCase();
                 learnKysimusEl.textContent = 'Mida see tähendab?';
                 manguTagasiside.innerHTML = '<span>👆 Vali õige eesti tõlge!</span>';
@@ -794,7 +729,6 @@
                     variandidContainer.appendChild(btn);
                 });
             } else if (aktiivneLearnTase === 'B1') {
-                // Eesti → Soome (valikvastused)
                 sonaKaartEl.textContent = hetkelSonaMang.eesti.toUpperCase();
                 learnKysimusEl.textContent = 'Mis on soome keeles?';
                 manguTagasiside.innerHTML = '<span>👆 Vali õige soome tõlge!</span>';
@@ -808,13 +742,14 @@
                     variandidContainer.appendChild(btn);
                 });
             } else if (aktiivneLearnTase === 'B2') {
-                // Eesti → Soome (kirjuta ise)
                 sonaKaartEl.textContent = hetkelSonaMang.eesti.toUpperCase();
                 sonaKaartEl.classList.add('b2-sisend');
                 learnKysimusEl.textContent = 'Kirjuta soome keeles:';
                 manguTagasiside.innerHTML = '<span>✍️ Kirjuta soome sõna ja vajuta Enter või Kontrolli!</span>';
                 b2SisendAla.classList.remove('hidden');
+                b2SisendAla.style.display = 'block';
                 b2ManguVastus.value = '';
+                b2ManguVastus.disabled = false;
                 b2ManguVastus.focus();
             }
         }
@@ -887,8 +822,10 @@
                 learnSeeria = 0;
                 learnSeeriaEl.textContent = learnSeeria;
             }
-            b2ManguVastus.disabled = true;
+            
+            b2SisendAla.style.display = 'none';
             learnJargmine.style.display = 'block';
+            
             if (opitudSonad.length === 100) setTimeout(() => lopetaMangFunc(), 1000);
         }
         
@@ -1156,7 +1093,6 @@
             uuendaLearnTaseNupud();
             salvestaEdusammud();
             saadaGA('learn_tase_valitud', { event_category: 'learn', event_label: tase });
-            // Nulli mängu edusammud taseme vahetamisel
             opitudSonad = [];
             localStorage.setItem('opitudSonad', '[]');
             learnSeeria = 0;
@@ -1173,7 +1109,6 @@
         
         // ===== KÄIVITAMINE =====
         function init() {
-            // Taasta salvestatud learn tase
             const salvestatud = JSON.parse(localStorage.getItem('soomeTreenerPRO') || '{}');
             if (salvestatud.learnTase) aktiivneLearnTase = salvestatud.learnTase;
             
@@ -1185,7 +1120,6 @@
             valiJuhuslikLause();
             saadaRaskusaste(aktiivneTase);
             
-            // Harjuta/test/maraton sündmused
             kontrolliNupp.addEventListener('click', kontrolliVastust);
             jargmineNupp.addEventListener('click', uusLause);
             uusLauseNupp.addEventListener('click', uusLause);
@@ -1262,10 +1196,8 @@
                 salvestaEdusammud();
             }));
             
-            // 100 sõna mängu taseme nupud
             learnTaseNupud.forEach(n => n.addEventListener('click', () => vahetaLearnTase(n.dataset.learnTase)));
             
-            // B2 kirjutamise sündmused
             b2KontrolliNupp.addEventListener('click', kontrolliB2Vastust);
             b2ManguVastus.addEventListener('keypress', e => {
                 if(e.key === 'Enter' && !vastatud) kontrolliB2Vastust();
@@ -1282,7 +1214,6 @@
                 learnTaseValik.style.display = 'none';
             });
             
-            // 100 sõna mängu üldnupud
             learnJargmine.addEventListener('click', naitaSonaMang);
             learnUusMang.addEventListener('click', () => {
                 if(confirm('Alustada uut mängu? Kõik edusammud nullitakse.')) alustaUutMangu();
